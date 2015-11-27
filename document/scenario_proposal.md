@@ -88,3 +88,10 @@ date: November 19, 2015
 5. Who is providing information about damages and when? Should we predict where damage is likely to happen, or only take into account damages that have alrady happened and have been reported by someone?
 
 6. Is crisis management about a crisis that has happened, or about a crisis that is likely/going to happen?
+
+## 27.11.2015 – 1st project discussion with supervisor	
+
+User group: 
+
++ The C&C Center decision makers who are working probably in a group, staring at a big (touch)screen and checking the events popping up. They will make their decisions based on what happens where, how urgent and how severe the event is. 
++ The SDSS have a simple user interface where they can select different base maps (satellite image or road network), events are depicted with simbols, users can place simbols (drag & drop), delineate damaged areas based on damage type and level
