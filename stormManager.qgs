@@ -83,9 +83,9 @@
         <property key="ol_layer_type" value="OpenStreetMap"/>
       </customproperties>
     </maplayer>
-    <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>reports20151202204347091</id>
-      <datasource>./work/reports.shp|layerid=0|subset="starttime" &lt;= '2015-12-03 19:00:00' AND "endtime" >= '2015-12-03 18:50:00' </datasource>
+      <datasource>./work/reports.shp|layerid=0|subset="starttime" &lt;= '2015-12-03 19:00:35' AND "endtime" >= '2015-12-03 18:50:35' </datasource>
       <title></title>
       <abstract></abstract>
       <keywordList>
@@ -128,8 +128,100 @@
           <widgetv2config fieldEditable="1" calendar_popup="1" allow_null="0" display_format="yyyy-MM-dd HH:mm:ss" field_format="yyyy-MM-dd HH:mm:ss" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <renderer-v2 symbollevels="0" type="singleSymbol">
+      <renderer-v2 attr="dmgType" symbollevels="0" type="categorizedSymbol">
+        <categories>
+          <category render="true" symbol="0" value="building" label="building"/>
+          <category render="true" symbol="1" value="fire" label="fire"/>
+          <category render="true" symbol="2" value="tree" label="tree"/>
+          <category render="true" symbol="3" value="" label=""/>
+        </categories>
         <symbols>
+          <symbol alpha="1" type="marker" name="0">
+            <layer pass="0" class="SimpleMarker" locked="0">
+              <prop k="angle" v="0"/>
+              <prop k="color" v="239,81,131,255"/>
+              <prop k="horizontal_anchor_point" v="1"/>
+              <prop k="name" v="circle"/>
+              <prop k="offset" v="0,0"/>
+              <prop k="offset_map_unit_scale" v="0,0"/>
+              <prop k="offset_unit" v="MM"/>
+              <prop k="outline_color" v="0,0,0,255"/>
+              <prop k="outline_style" v="solid"/>
+              <prop k="outline_width" v="0"/>
+              <prop k="outline_width_map_unit_scale" v="0,0"/>
+              <prop k="outline_width_unit" v="MM"/>
+              <prop k="scale_method" v="area"/>
+              <prop k="size" v="2"/>
+              <prop k="size_map_unit_scale" v="0,0"/>
+              <prop k="size_unit" v="MM"/>
+              <prop k="vertical_anchor_point" v="1"/>
+            </layer>
+          </symbol>
+          <symbol alpha="1" type="marker" name="1">
+            <layer pass="0" class="SimpleMarker" locked="0">
+              <prop k="angle" v="0"/>
+              <prop k="color" v="90,213,176,255"/>
+              <prop k="horizontal_anchor_point" v="1"/>
+              <prop k="name" v="circle"/>
+              <prop k="offset" v="0,0"/>
+              <prop k="offset_map_unit_scale" v="0,0"/>
+              <prop k="offset_unit" v="MM"/>
+              <prop k="outline_color" v="0,0,0,255"/>
+              <prop k="outline_style" v="solid"/>
+              <prop k="outline_width" v="0"/>
+              <prop k="outline_width_map_unit_scale" v="0,0"/>
+              <prop k="outline_width_unit" v="MM"/>
+              <prop k="scale_method" v="area"/>
+              <prop k="size" v="2"/>
+              <prop k="size_map_unit_scale" v="0,0"/>
+              <prop k="size_unit" v="MM"/>
+              <prop k="vertical_anchor_point" v="1"/>
+            </layer>
+          </symbol>
+          <symbol alpha="1" type="marker" name="2">
+            <layer pass="0" class="SimpleMarker" locked="0">
+              <prop k="angle" v="0"/>
+              <prop k="color" v="196,212,125,255"/>
+              <prop k="horizontal_anchor_point" v="1"/>
+              <prop k="name" v="circle"/>
+              <prop k="offset" v="0,0"/>
+              <prop k="offset_map_unit_scale" v="0,0"/>
+              <prop k="offset_unit" v="MM"/>
+              <prop k="outline_color" v="0,0,0,255"/>
+              <prop k="outline_style" v="solid"/>
+              <prop k="outline_width" v="0"/>
+              <prop k="outline_width_map_unit_scale" v="0,0"/>
+              <prop k="outline_width_unit" v="MM"/>
+              <prop k="scale_method" v="area"/>
+              <prop k="size" v="2"/>
+              <prop k="size_map_unit_scale" v="0,0"/>
+              <prop k="size_unit" v="MM"/>
+              <prop k="vertical_anchor_point" v="1"/>
+            </layer>
+          </symbol>
+          <symbol alpha="1" type="marker" name="3">
+            <layer pass="0" class="SimpleMarker" locked="0">
+              <prop k="angle" v="0"/>
+              <prop k="color" v="126,100,228,255"/>
+              <prop k="horizontal_anchor_point" v="1"/>
+              <prop k="name" v="circle"/>
+              <prop k="offset" v="0,0"/>
+              <prop k="offset_map_unit_scale" v="0,0"/>
+              <prop k="offset_unit" v="MM"/>
+              <prop k="outline_color" v="0,0,0,255"/>
+              <prop k="outline_style" v="solid"/>
+              <prop k="outline_width" v="0"/>
+              <prop k="outline_width_map_unit_scale" v="0,0"/>
+              <prop k="outline_width_unit" v="MM"/>
+              <prop k="scale_method" v="area"/>
+              <prop k="size" v="2"/>
+              <prop k="size_map_unit_scale" v="0,0"/>
+              <prop k="size_unit" v="MM"/>
+              <prop k="vertical_anchor_point" v="1"/>
+            </layer>
+          </symbol>
+        </symbols>
+        <source-symbol>
           <symbol alpha="1" type="marker" name="0">
             <layer pass="0" class="SimpleMarker" locked="0">
               <prop k="angle" v="0"/>
@@ -151,7 +243,9 @@
               <prop k="vertical_anchor_point" v="1"/>
             </layer>
           </symbol>
-        </symbols>
+        </source-symbol>
+        <colorramp type="randomcolors" name="[source]"/>
+        <invertedcolorramp value="0"/>
         <rotation/>
         <sizescale scalemethod="area"/>
       </renderer-v2>
@@ -354,11 +448,11 @@
     <TimeManager>
       <timeFrameSize type="int">10</timeFrameSize>
       <mode type="int">0</mode>
-      <timeLayerManager type="QString">2015-12-03 11:20:35;2015-12-03 18:49:54;2015-12-03 18:50:00</timeLayerManager>
+      <timeLayerManager type="QString">2015-12-03 11:20:35;2015-12-03 18:49:54;2015-12-03 18:50:35</timeLayerManager>
       <digits type="int">4</digits>
       <active type="int">1</active>
       <timeFrameType type="QString">minutes</timeFrameType>
-      <currentMapTimePosition type="QString">2015-12-03 18:50:00</currentMapTimePosition>
+      <currentMapTimePosition type="QString">2015-12-03 18:50:35</currentMapTimePosition>
       <loopAnimation type="int">0</loopAnimation>
       <animationFrameLength type="int">500</animationFrameLength>
       <timeLayerList type="QStringList">
