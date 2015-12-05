@@ -46,9 +46,9 @@ PY_FILES = \
 	__init__.py \
 	spatial_decision.py spatial_decision_dockwidget.py
 
-UI_FILES = spatial_decision_dockwidget_base.ui
+#UI_FILES = spatial_decision_dockwidget_base.ui
 
-EXTRAS = metadata.txt icon.png
+EXTRAS = metadata.txt ./icons/icon.png
 
 COMPILED_RESOURCE_FILES = resources.py
 
@@ -104,11 +104,11 @@ deploy: compile doc transcompile
 	# the Python plugin directory is located at:
 	# $HOME/$(QGISDIR)/python/plugins
 	mkdir -p $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(PY_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(UI_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(COMPILED_RESOURCE_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(EXTRAS) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vfr i18n $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf $(PY_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/
+	cp -vf $(UI_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/
+	cp -vf $(COMPILED_RESOURCE_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/
+	cp -vf $(EXTRAS) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/
+	cp -vfr i18n $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/
 	cp -vfr $(HELP) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/help
 
 # The dclean target removes compiled python files from plugin directory
