@@ -82,6 +82,9 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.expressionFilterButton.clicked.connect(self.filterFeaturesExpression)
 
         # visualisation
+        self.count = 0
+        self.disp.display(self.count)
+        self.number.clicked.connect(self.counter)
 
         # reporting
         self.featureCounterUpdateButton.clicked.connect(self.updateNumberFeatures)
@@ -368,8 +371,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 #######
 #    Visualisation functions
 #######
-
-
+    # Just a simple counter button
+    def counter(self):
+        """Simple counter"""
+        self.count += 1
+        self.disp.display(self.count)
 
 #######
 #    Reporting functions

@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="sampleWidgets">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="dataTab">
        <attribute name="title">
@@ -240,6 +240,29 @@
        <attribute name="title">
         <string>visualisation</string>
        </attribute>
+       <widget class="QPushButton" name="number">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>98</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Count</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="disp">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>12</y>
+          <width>101</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="visualisationTab">
        <attribute name="title">
