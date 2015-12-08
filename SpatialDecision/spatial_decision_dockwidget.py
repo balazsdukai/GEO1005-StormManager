@@ -83,6 +83,13 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # visualisation
         self.count = 0
+        # a = 's', 'c', 'd'
+        # items = [i for i in a]
+        # self.featureWidget.addItems(items) # 0—attributes, 1—id
+        layer = uf.getLegendLayerByName(iface, 'reports')
+        #field_name = self.getFieldValues(layer, 'dmgType')
+        self.featureWidget.addItems(self.featureInfo(layer, 'dmgType', selection = True)[0])
+
         self.disp.display(self.count)
         self.number.clicked.connect(self.counter)
 
@@ -376,6 +383,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         """Simple counter"""
         self.count += 1
         self.disp.display(self.count)
+
+    def featureInfo(self, layer, field_name, selection = True):
+        "Gets the values of a selected feature"
+        info = uf.getFieldValues(layer, field_name, selection)
+        return info
 
 #######
 #    Reporting functions
