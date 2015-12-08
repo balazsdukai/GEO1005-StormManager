@@ -82,14 +82,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.expressionFilterButton.clicked.connect(self.filterFeaturesExpression)
 
         # visualisation
-        self.count = 0
-        # a = 's', 'c', 'd'
-        # items = [i for i in a]
-        # self.featureWidget.addItems(items) # 0—attributes, 1—id
-        layer = uf.getLegendLayerByName(iface, 'reports')
-        #field_name = self.getFieldValues(layer, 'dmgType')
-        self.featureWidget.addItems(self.featureInfo(layer, 'dmgType', selection = True)[0])
+        self.showButton.clicked.connect(self.updateLayerWidget)
+        self.showButton.clicked.connect(self.updateFieldWidget)
+        self.showButton.clicked.connect(self.updateValueWidget)
 
+        self.count = 0
         self.disp.display(self.count)
         self.number.clicked.connect(self.counter)
 
@@ -384,10 +381,30 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.count += 1
         self.disp.display(self.count)
 
-    def featureInfo(self, layer, field_name, selection = True):
-        "Gets the values of a selected feature"
-        info = uf.getFieldValues(layer, field_name, selection)
-        return info
+    def updateLayerWidget(self):
+        """Retrieves selected layer name and sends it to layerWidget"""
+        self.layerWidget.clear()
+        layer_name = self.selectLayerCombo.currentText()
+        self.layerWidget.addItem(layer_name)
+
+    def updateFieldWidget(self):
+        """Retrieves selected attribute name and sends it to attributeWidget"""
+        self.fieldWidget.clear()
+        field_name = self.getSelectedAttribute()
+        self.fieldWidget.addItem(field_name)
+
+    def updateValueWidget(self):
+        """Retrieves selected feature attribute values and sends them to valueWidget"""
+        self.valueWidget.clear()
+        layer = self.getSelectedLayer()
+        field_name = self.getSelectedAttribute()
+        vals = uf.getFieldValues(layer, field_name, selection = True)
+        attribute = map(str, vals[0])
+        # if not attribute:
+        #     attribute = 'NULL'
+        self.valueWidget.addItems(attribute)
+
+
 
 #######
 #    Reporting functions
