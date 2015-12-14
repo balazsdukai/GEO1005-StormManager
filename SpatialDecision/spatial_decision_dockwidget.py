@@ -53,11 +53,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
-        self.canvas.setSelectionColor(QtGui.QColor(255,0,0))
+
         # define globals
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
-
+        self.canvas.setSelectionColor(QtGui.QColor(255,0,0))
         # set up GUI operation signals
         # data
         self.iface.projectRead.connect(self.updateLayers)
@@ -67,6 +67,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.selectLayerCombo.activated.connect(self.setSelectedLayer)
         self.selectAttributeCombo.activated.connect(self.setSelectedAttribute)
 
+        # signals
+        self.canvas.selectionChanged.connect(self.updateLayerWidget)
         self.canvas.selectionChanged.connect(self.updateFieldWidget)
         self.canvas.selectionChanged.connect(self.updateValueWidget)
         self.eventlayer=uf.getLegendLayerByName(self.iface,'reports')
