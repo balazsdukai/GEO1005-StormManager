@@ -53,7 +53,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
-
+        self.canvas.setSelectionColor(QtGui.QColor(255,0,0))
         # define globals
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
@@ -66,6 +66,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.saveScenarioButton.clicked.connect(self.saveScenario)
         self.selectLayerCombo.activated.connect(self.setSelectedLayer)
         self.selectAttributeCombo.activated.connect(self.setSelectedAttribute)
+
+        self.canvas.selectionChanged.connect(self.updateFieldWidget)
+        self.canvas.selectionChanged.connect(self.updateValueWidget)
+        self.eventlayer=uf.getLegendLayerByName(self.iface,'reports')
+        self.canvas.renderStarting.connect(self.loadSymbols)
 
         # analysis
         self.graph = QgsGraph()
@@ -100,6 +105,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.makeIntersectionButton.hide()
 
         # initialisation
+        self.eventlayer=uf.getLegendLayerByName(self.iface,'reports')
         self.updateLayers()
 
         #run simple tests
@@ -169,6 +175,28 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         field_name = self.selectAttributeCombo.currentText()
         return field_name
 
+    def loadSymbols(self):
+        if(self.eventlayer):
+            filepath = os.path.join( os.path.dirname(__file__),'svg\\')
+            event={
+                'tree':(filepath+'tree.svg','tree'),
+                'fire':(filepath+'fire.svg','fire'),
+                'building':(filepath+'building.svg','building'),
+
+            }
+            categories=[]
+            for dmgtype,(path,label) in event.items():
+                symbol_layer = QgsSvgMarkerSymbolLayerV2()
+                symbol_layer.setSize(5.0)
+                symbol_layer.setPath(path)
+                symbol=QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
+                symbol.appendSymbolLayer(symbol_layer)
+                symbol.deleteSymbolLayer(0)
+                category=QgsRendererCategoryV2(dmgtype,symbol,label)
+                categories.append(category)
+            expression = 'dmgType' # field name
+            renderer = QgsCategorizedSymbolRendererV2(expression, categories)
+            self.eventlayer.setRendererV2(renderer)
 #######
 #    Analysis functions
 #######
