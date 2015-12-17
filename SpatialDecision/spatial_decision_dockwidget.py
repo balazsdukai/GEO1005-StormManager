@@ -58,16 +58,15 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # data
         self.iface.projectRead.connect(self.updateLayers)
         self.iface.newProjectCreated.connect(self.updateLayers)
-        self.openScenarioButton.clicked.connect(self.openScenario)
-        self.saveScenarioButton.clicked.connect(self.saveScenario)
+        self.openScenarioButton.hide()
+        self.saveScenarioButton.hide()
+        # self.openScenarioButton.clicked.connect(self.openScenario)
+        # self.saveScenarioButton.clicked.connect(self.saveScenario)
         self.selectLayerCombo.activated.connect(self.setSelectedLayer)
         self.selectAttributeCombo.activated.connect(self.setSelectedAttribute)
+        self.showButton.clicked.connect(self.updateValueWidget)
 
         # signals
-        self.canvas.selectionChanged.connect(self.updateLayerWidget)
-        self.canvas.selectionChanged.connect(self.updateFieldWidget)
-        self.canvas.selectionChanged.connect(self.updateValueWidget)
-        self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
         self.canvas.renderStarting.connect(self.loadSymbols)
 
         # analysis
@@ -85,18 +84,14 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.expressionFilterButton.clicked.connect(self.filterFeaturesExpression)
 
         # visualisation
-        self.showButton.clicked.connect(self.updateLayerWidget)
-        self.showButton.clicked.connect(self.updateFieldWidget)
-        self.showButton.clicked.connect(self.updateValueWidget)
-
-        self.count = 0
-        self.disp.display(self.count)
-        self.number.clicked.connect(self.counter)
 
         # reporting
-        self.featureCounterUpdateButton.clicked.connect(self.updateNumberFeatures)
-        self.saveMapButton.clicked.connect(self.saveMap)
-        self.saveMapPathButton.clicked.connect(self.selectFile)
+        self.featureCounterUpdateButton.hide()
+        self.saveMapButton.hide()
+        self.saveMapPathButton.hide()
+        # self.featureCounterUpdateButton.clicked.connect(self.updateNumberFeatures)
+        # self.saveMapButton.clicked.connect(self.saveMap)
+        # self.saveMapPathButton.clicked.connect(self.selectFile)
         self.updateAttribute.connect(self.extractAttributeSummary)
 
         # set current UI restrictions
@@ -181,7 +176,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 'fire': (filepath + 'fire.svg', 'fire'),
                 'building': (filepath + 'building.svg', 'building')
             }
-            print filepath
+            #print filepath
             categories = []
             for dmgtype, (path, label) in event.items():
                 symbol_layer = QgsSvgMarkerSymbolLayerV2()
@@ -195,9 +190,10 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             expression = 'dmgType'  # field name
             renderer = QgsCategorizedSymbolRendererV2(expression, categories)
             self.eventlayer.setRendererV2(renderer)
-        #######
-        #    Analysis functions
-        #######
+
+    #######
+    #    Analysis functions
+    #######
 
     # route functions
     def getNetwork(self):
@@ -406,24 +402,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     #######
     #    Visualisation functions
     #######
-    # Just a simple counter button
-    def counter(self):
-        """Simple counter"""
-        self.count += 1
-        self.disp.display(self.count)
-
-    def updateLayerWidget(self):
-        """Retrieves selected layer name and sends it to layerWidget"""
-        self.layerWidget.clear()
-        layer_name = self.selectLayerCombo.currentText()
-        self.layerWidget.addItem(layer_name)
-
-    def updateFieldWidget(self):
-        """Retrieves selected attribute name and sends it to attributeWidget"""
-        self.fieldWidget.clear()
-        field_name = self.getSelectedAttribute()
-        self.fieldWidget.addItem(field_name)
-
+    
     def updateValueWidget(self):
         """Retrieves selected feature attribute values and sends them to valueWidget"""
         self.valueWidget.clear()
