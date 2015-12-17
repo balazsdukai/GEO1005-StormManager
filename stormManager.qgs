@@ -14,10 +14,10 @@
   <mapcanvas>
     <units>meters</units>
     <extent>
-      <xmin>489547.64347077440470457</xmin>
-      <ymin>6776739.50239031203091145</ymin>
-      <xmax>507980.20472736191004515</xmax>
-      <ymax>6795172.06364689953625202</ymax>
+      <xmin>487839.45352673711022362</xmin>
+      <ymin>6774832.68570859543979168</ymin>
+      <xmax>506272.0147833246155642</xmax>
+      <ymax>6793265.24696518294513226</ymax>
     </extent>
     <rotation>0</rotation>
     <projections>1</projections>
@@ -85,7 +85,7 @@
     </maplayer>
     <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>reports20151202204347091</id>
-      <datasource>./work/reports.shp|layerid=0|subset="starttime" &lt;= '2015-12-03 19:00:35' AND "endtime" >= '2015-12-03 18:50:35' </datasource>
+      <datasource>./work/reports.shp|layerid=0</datasource>
       <title></title>
       <abstract></abstract>
       <keywordList>
@@ -127,125 +127,78 @@
         <edittype widgetv2type="DateTime" name="endtime">
           <widgetv2config fieldEditable="1" calendar_popup="1" allow_null="0" display_format="yyyy-MM-dd HH:mm:ss" field_format="yyyy-MM-dd HH:mm:ss" labelOnTop="0"/>
         </edittype>
+        <edittype widgetv2type="TextEdit" name="unitOnSite">
+          <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+        </edittype>
       </edittypes>
       <renderer-v2 attr="dmgType" symbollevels="0" type="categorizedSymbol">
         <categories>
-          <category render="true" symbol="0" value="building" label="building"/>
-          <category render="true" symbol="1" value="fire" label="fire"/>
+          <category render="true" symbol="0" value="fire" label="fire"/>
+          <category render="true" symbol="1" value="building" label="building"/>
           <category render="true" symbol="2" value="tree" label="tree"/>
-          <category render="true" symbol="3" value="" label=""/>
         </categories>
         <symbols>
           <symbol alpha="1" type="marker" name="0">
-            <layer pass="0" class="SimpleMarker" locked="0">
+            <layer pass="0" class="SvgMarker" locked="0">
               <prop k="angle" v="0"/>
-              <prop k="color" v="239,81,131,255"/>
+              <prop k="color" v="#000000"/>
               <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="name" v="circle"/>
+              <prop k="name" v="../../../../../.qgis2/python/plugins/SpatialDecision/svg/fire.svg"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0"/>
               <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
+              <prop k="outline_color" v="#000000"/>
+              <prop k="outline_width" v="1"/>
               <prop k="outline_width_map_unit_scale" v="0,0"/>
               <prop k="outline_width_unit" v="MM"/>
               <prop k="scale_method" v="area"/>
-              <prop k="size" v="2"/>
+              <prop k="size" v="5"/>
               <prop k="size_map_unit_scale" v="0,0"/>
               <prop k="size_unit" v="MM"/>
               <prop k="vertical_anchor_point" v="1"/>
             </layer>
           </symbol>
           <symbol alpha="1" type="marker" name="1">
-            <layer pass="0" class="SimpleMarker" locked="0">
+            <layer pass="0" class="SvgMarker" locked="0">
               <prop k="angle" v="0"/>
-              <prop k="color" v="90,213,176,255"/>
+              <prop k="color" v="#000000"/>
               <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="name" v="circle"/>
+              <prop k="name" v="../../../../../.qgis2/python/plugins/SpatialDecision/svg/building.svg"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0"/>
               <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
+              <prop k="outline_color" v="#000000"/>
+              <prop k="outline_width" v="1"/>
               <prop k="outline_width_map_unit_scale" v="0,0"/>
               <prop k="outline_width_unit" v="MM"/>
               <prop k="scale_method" v="area"/>
-              <prop k="size" v="2"/>
+              <prop k="size" v="5"/>
               <prop k="size_map_unit_scale" v="0,0"/>
               <prop k="size_unit" v="MM"/>
               <prop k="vertical_anchor_point" v="1"/>
             </layer>
           </symbol>
           <symbol alpha="1" type="marker" name="2">
-            <layer pass="0" class="SimpleMarker" locked="0">
+            <layer pass="0" class="SvgMarker" locked="0">
               <prop k="angle" v="0"/>
-              <prop k="color" v="196,212,125,255"/>
+              <prop k="color" v="#000000"/>
               <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="name" v="circle"/>
+              <prop k="name" v="../../../../../.qgis2/python/plugins/SpatialDecision/svg/tree.svg"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0"/>
               <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
+              <prop k="outline_color" v="#000000"/>
+              <prop k="outline_width" v="1"/>
               <prop k="outline_width_map_unit_scale" v="0,0"/>
               <prop k="outline_width_unit" v="MM"/>
               <prop k="scale_method" v="area"/>
-              <prop k="size" v="2"/>
-              <prop k="size_map_unit_scale" v="0,0"/>
-              <prop k="size_unit" v="MM"/>
-              <prop k="vertical_anchor_point" v="1"/>
-            </layer>
-          </symbol>
-          <symbol alpha="1" type="marker" name="3">
-            <layer pass="0" class="SimpleMarker" locked="0">
-              <prop k="angle" v="0"/>
-              <prop k="color" v="126,100,228,255"/>
-              <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="name" v="circle"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
-              <prop k="outline_width_map_unit_scale" v="0,0"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="scale_method" v="area"/>
-              <prop k="size" v="2"/>
+              <prop k="size" v="5"/>
               <prop k="size_map_unit_scale" v="0,0"/>
               <prop k="size_unit" v="MM"/>
               <prop k="vertical_anchor_point" v="1"/>
             </layer>
           </symbol>
         </symbols>
-        <source-symbol>
-          <symbol alpha="1" type="marker" name="0">
-            <layer pass="0" class="SimpleMarker" locked="0">
-              <prop k="angle" v="0"/>
-              <prop k="color" v="42,213,251,255"/>
-              <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="name" v="circle"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
-              <prop k="outline_width_map_unit_scale" v="0,0"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="scale_method" v="area"/>
-              <prop k="size" v="2"/>
-              <prop k="size_map_unit_scale" v="0,0"/>
-              <prop k="size_unit" v="MM"/>
-              <prop k="vertical_anchor_point" v="1"/>
-            </layer>
-          </symbol>
-        </source-symbol>
-        <colorramp type="randomcolors" name="[source]"/>
-        <invertedcolorramp value="0"/>
         <rotation/>
         <sizescale scalemethod="area"/>
       </renderer-v2>
@@ -440,6 +393,9 @@
         </edittype>
         <edittype widgetv2type="DateTime" name="endtime">
           <widgetv2config fieldEditable="1" calendar_popup="1" allow_null="0" display_format="yyyy-MM-dd HH:mm:ss" field_format="yyyy-MM-dd HH:mm:ss" labelOnTop="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="unitOnSite">
+          <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
     </maplayer>

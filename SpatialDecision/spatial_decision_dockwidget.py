@@ -26,22 +26,18 @@ from qgis.core import *
 from qgis.networkanalysis import *
 # Initialize Qt resources from file resources.py
 import resources
-
 import os
 import os.path
 import random
-
 from . import utility_functions as uf
-
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'spatial_decision_dockwidget_base.ui'))
 
 
 class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
-
     closingPlugin = QtCore.pyqtSignal()
-    #custom signals
+    # custom signals
     updateAttribute = QtCore.pyqtSignal(str)
 
     def __init__(self, iface, parent=None):
@@ -57,7 +53,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # define globals
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
-        self.canvas.setSelectionColor(QtGui.QColor(255,0,0))
+        self.canvas.setSelectionColor(QtGui.QColor(255, 0, 0))
         # set up GUI operation signals
         # data
         self.iface.projectRead.connect(self.updateLayers)
@@ -71,7 +67,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.canvas.selectionChanged.connect(self.updateLayerWidget)
         self.canvas.selectionChanged.connect(self.updateFieldWidget)
         self.canvas.selectionChanged.connect(self.updateValueWidget)
-        self.eventlayer=uf.getLegendLayerByName(self.iface,'reports')
+        self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
         self.canvas.renderStarting.connect(self.loadSymbols)
 
         # analysis
@@ -107,10 +103,10 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.makeIntersectionButton.hide()
 
         # initialisation
-        self.eventlayer=uf.getLegendLayerByName(self.iface,'reports')
+        self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
         self.updateLayers()
 
-        #run simple tests
+        # run simple tests
 
     def closeEvent(self, event):
         # disconnect interface signals
@@ -120,12 +116,12 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.closingPlugin.emit()
         event.accept()
 
-#######
-#   Data functions
-#######
-    def openScenario(self,filename=""):
+    #######
+    #   Data functions
+    #######
+    def openScenario(self, filename=""):
         scenario_open = False
-        scenario_file = os.path.join('/Users/jorge/github/GEO1005','sample_data','time_test.qgs')
+        scenario_file = os.path.join('/Users/jorge/github/GEO1005', 'sample_data', 'time_test.qgs')
         # check if file exists
         if os.path.isfile(scenario_file):
             self.iface.addProject(scenario_file)
@@ -152,12 +148,12 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
     def setSelectedLayer(self):
         layer_name = self.selectLayerCombo.currentText()
-        layer = uf.getLegendLayerByName(self.iface,layer_name)
+        layer = uf.getLegendLayerByName(self.iface, layer_name)
         self.updateAttributes(layer)
 
     def getSelectedLayer(self):
         layer_name = self.selectLayerCombo.currentText()
-        layer = uf.getLegendLayerByName(self.iface,layer_name)
+        layer = uf.getLegendLayerByName(self.iface, layer_name)
         return layer
 
     def updateAttributes(self, layer):
@@ -178,30 +174,31 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         return field_name
 
     def loadSymbols(self):
-        if(self.eventlayer):
-            filepath = os.path.join( os.path.dirname(__file__),'svg\\')
-            event={
-                'tree':(filepath+'tree.svg','tree'),
-                'fire':(filepath+'fire.svg','fire'),
-                'building':(filepath+'building.svg','building'),
-
+        if (self.eventlayer):
+            filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
+            event = {
+                'tree': (filepath + 'tree.svg', 'tree'),
+                'fire': (filepath + 'fire.svg', 'fire'),
+                'building': (filepath + 'building.svg', 'building')
             }
-            categories=[]
-            for dmgtype,(path,label) in event.items():
+            print filepath
+            categories = []
+            for dmgtype, (path, label) in event.items():
                 symbol_layer = QgsSvgMarkerSymbolLayerV2()
                 symbol_layer.setSize(5.0)
                 symbol_layer.setPath(path)
-                symbol=QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
+                symbol = QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
                 symbol.appendSymbolLayer(symbol_layer)
                 symbol.deleteSymbolLayer(0)
-                category=QgsRendererCategoryV2(dmgtype,symbol,label)
+                category = QgsRendererCategoryV2(dmgtype, symbol, label)
                 categories.append(category)
-            expression = 'dmgType' # field name
+            expression = 'dmgType'  # field name
             renderer = QgsCategorizedSymbolRendererV2(expression, categories)
             self.eventlayer.setRendererV2(renderer)
-#######
-#    Analysis functions
-#######
+        #######
+        #    Analysis functions
+        #######
+
     # route functions
     def getNetwork(self):
         roads_layer = self.getSelectedLayer()
@@ -212,7 +209,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 # retrieve roads outside obstacles (inside = False)
                 features = uf.getFeaturesByIntersection(roads_layer, obstacles_layer, False)
                 # add these roads to a new temporary layer
-                road_network = uf.createTempLayer('Temp_Network','LINESTRING',roads_layer.crs().postgisSrid(),[],[])
+                road_network = uf.createTempLayer('Temp_Network', 'LINESTRING', roads_layer.crs().postgisSrid(), [], [])
                 road_network.dataProvider().addFeatures(features)
             else:
                 road_network = roads_layer
@@ -242,7 +239,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         if options > 1:
             # origin and destination are given as an index in the tied_points list
             origin = 0
-            destination = random.randint(1,options-1)
+            destination = random.randint(1, options - 1)
             # calculate the shortest path for the given origin and destination
             path = uf.calculateRouteDijkstra(self.graph, self.tied_points, origin, destination)
             # store the route results in temporary layer called "Routes"
@@ -251,10 +248,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             if not routes_layer:
                 attribs = ['id']
                 types = [QtCore.QVariant.String]
-                routes_layer = uf.createTempLayer('Routes','LINESTRING',self.network_layer.crs().postgisSrid(), attribs, types)
+                routes_layer = uf.createTempLayer('Routes', 'LINESTRING', self.network_layer.crs().postgisSrid(),
+                                                  attribs, types)
                 uf.loadTempLayer(routes_layer)
             # insert route line
-            uf.insertTempFeatures(routes_layer, [path], [['testing',100.00]])
+            uf.insertTempFeatures(routes_layer, [path], [['testing', 100.00]])
             self.refreshCanvas(routes_layer)
 
     def deleteRoutes(self):
@@ -277,7 +275,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         options = len(self.tied_points)
         if options > 0:
             # origin is given as an index in the tied_points list
-            origin = random.randint(1,options-1)
+            origin = random.randint(1, options - 1)
             cutoff_distance = self.getServiceAreaCutoff()
             if cutoff_distance == 0:
                 return
@@ -288,7 +286,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             if not area_layer:
                 attribs = ['cost']
                 types = [QtCore.QVariant.Double]
-                area_layer = uf.createTempLayer('Service_Area','POINT',self.network_layer.crs().postgisSrid(), attribs, types)
+                area_layer = uf.createTempLayer('Service_Area', 'POINT', self.network_layer.crs().postgisSrid(),
+                                                attribs, types)
                 uf.loadTempLayer(area_layer)
             # insert service area points
             geoms = []
@@ -317,14 +316,14 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             buffers = {}
             for point in origins:
                 geom = point.geometry()
-                buffers[point.id()] = geom.buffer(cutoff_distance,12)
+                buffers[point.id()] = geom.buffer(cutoff_distance, 12)
             # store the buffer results in temporary layer called "Buffers"
             buffer_layer = uf.getLegendLayerByName(self.iface, "Buffers")
             # create one if it doesn't exist
             if not buffer_layer:
                 attribs = ['id', 'distance']
                 types = [QtCore.QVariant.String, QtCore.QVariant.Double]
-                buffer_layer = uf.createTempLayer('Buffers','POLYGON',layer.crs().postgisSrid(), attribs, types)
+                buffer_layer = uf.createTempLayer('Buffers', 'POLYGON', layer.crs().postgisSrid(), attribs, types)
                 uf.loadTempLayer(buffer_layer)
             # insert buffer polygons
             geoms = []
@@ -333,7 +332,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 # each buffer has an id and a geometry
                 geoms.append(buffer[1])
                 # in the case of values, it expects a list of multiple values in each item - list of lists
-                values.append([buffer[0],cutoff_distance])
+                values.append([buffer[0], cutoff_distance])
             uf.insertTempFeatures(buffer_layer, geoms, values)
             self.refreshCanvas(buffer_layer)
 
@@ -344,7 +343,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         layer = self.getSelectedLayer()
         if cutter.featureCount() > 0:
             # get the intersections between the two layers
-            intersections = uf.getFeaturesIntersections(layer,cutter)
+            intersections = uf.getFeaturesIntersections(layer, cutter)
             if intersections:
                 # store the intersection geometries results in temporary layer called "Intersections"
                 intersection_layer = uf.getLegendLayerByName(self.iface, "Intersections")
@@ -352,11 +351,14 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 if not intersection_layer:
                     geom_type = intersections[0].type()
                     if geom_type == 1:
-                        intersection_layer = uf.createTempLayer('Intersections','POINT',layer.crs().postgisSrid(), [], [])
+                        intersection_layer = uf.createTempLayer('Intersections', 'POINT', layer.crs().postgisSrid(), [],
+                                                                [])
                     elif geom_type == 2:
-                        intersection_layer = uf.createTempLayer('Intersections','LINESTRING',layer.crs().postgisSrid(), [], [])
+                        intersection_layer = uf.createTempLayer('Intersections', 'LINESTRING',
+                                                                layer.crs().postgisSrid(), [], [])
                     elif geom_type == 3:
-                        intersection_layer = uf.createTempLayer('Intersections','POLYGON',layer.crs().postgisSrid(), [], [])
+                        intersection_layer = uf.createTempLayer('Intersections', 'POLYGON', layer.crs().postgisSrid(),
+                                                                [], [])
                     uf.loadTempLayer(intersection_layer)
                 # insert buffer polygons
                 geoms = []
@@ -401,10 +403,9 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         layer = self.getSelectedLayer()
         uf.filterFeaturesByExpression(layer, self.expressionEdit.text())
 
-
-#######
-#    Visualisation functions
-#######
+    #######
+    #    Visualisation functions
+    #######
     # Just a simple counter button
     def counter(self):
         """Simple counter"""
@@ -428,17 +429,15 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.valueWidget.clear()
         layer = self.getSelectedLayer()
         field_name = self.getSelectedAttribute()
-        vals = uf.getFieldValues(layer, field_name, selection = True)
+        vals = uf.getFieldValues(layer, field_name, selection=True)
         attribute = map(str, vals[0])
         # if not attribute:
         #     attribute = 'NULL'
         self.valueWidget.addItems(attribute)
 
-
-
-#######
-#    Reporting functions
-#######
+    #######
+    #    Reporting functions
+    #######
     # update a text edit field
     def updateNumberFeatures(self):
         layer = self.getSelectedLayer()
@@ -450,16 +449,16 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def selectFile(self):
         last_dir = uf.getLastDir("SDSS")
         path = QtGui.QFileDialog.getSaveFileName(self, "Save map file", last_dir, "PNG (*.png)")
-        if path.strip()!="":
+        if path.strip() != "":
             path = unicode(path)
-            uf.setLastDir(path,"SDSS")
+            uf.setLastDir(path, "SDSS")
             self.saveMapPathEdit.setText(path)
 
     # saving the current screen
     def saveMap(self):
         filename = self.saveMapPathEdit.text()
         if filename != '':
-            self.canvas.saveAsImage(filename,None,"PNG")
+            self.canvas.saveAsImage(filename, None, "PNG")
 
     def extractAttributeSummary(self, attribute):
         # get summary of the attribute
@@ -471,11 +470,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.updateTable(summary)
 
     # report window functions
-    def updateReport(self,report):
+    def updateReport(self, report):
         self.reportList.clear()
         self.reportList.addItems(report)
 
-    def insertReport(self,item):
+    def insertReport(self, item):
         self.reportList.insertItem(0, item)
 
     def clearReport(self):
@@ -484,11 +483,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     # table window functions
     def updateTable(self, values):
         # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
-        self.statisticsTable.setHorizontalHeaderLabels(["Item","Value"])
+        self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
         self.statisticsTable.setRowCount(len(values))
         for i, item in enumerate(values):
-            self.statisticsTable.setItem(i,0,QtGui.QTableWidgetItem(str(item[0])))
-            self.statisticsTable.setItem(i,1,QtGui.QTableWidgetItem(str(item[1])))
+            self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
+            self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
         self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
         self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
         self.statisticsTable.resizeRowsToContents()
