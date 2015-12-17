@@ -67,7 +67,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.showButton.clicked.connect(self.updateValueWidget)
 
         # signals
-        self.canvas.renderStarting.connect(self.loadSymbols)
+        # self.canvas.renderStarting.connect(self.loadSymbols)
 
         # analysis
         self.graph = QgsGraph()
@@ -176,7 +176,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 'fire': (filepath + 'fire.svg', 'fire'),
                 'building': (filepath + 'building.svg', 'building')
             }
-            #print filepath
             categories = []
             for dmgtype, (path, label) in event.items():
                 symbol_layer = QgsSvgMarkerSymbolLayerV2()
@@ -402,7 +401,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     #######
     #    Visualisation functions
     #######
-    
+
     def updateValueWidget(self):
         """Retrieves selected feature attribute values and sends them to valueWidget"""
         self.valueWidget.clear()
