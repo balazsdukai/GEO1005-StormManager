@@ -67,8 +67,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.showButton.clicked.connect(self.updateValueWidget)
 
         # signals
-        # self.canvas.renderStarting.connect(self.loadSymbols)
-
+        self.canvas.renderStarting.connect(self.loadSymbols)
+        self.canvas.selectionChanged.connect(self.updateValueWidget)
         # analysis
         self.graph = QgsGraph()
         self.tied_points = []
@@ -171,23 +171,40 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def loadSymbols(self):
         if (self.eventlayer):
             filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
-            event = {
-                'tree': (filepath + 'tree.svg', 'tree'),
-                'fire': (filepath + 'fire.svg', 'fire'),
-                'building': (filepath + 'building.svg', 'building')
-            }
-            categories = []
-            for dmgtype, (path, label) in event.items():
+            event_rules = (
+                ('tree', '"dmgType" LIKE \'tree\' AND "civilDmg"= 0', filepath + 'tree.svg', None,5),
+                ('fire', '"dmgType" LIKE \'fire\' AND "civilDmg"= 0', filepath + 'fire.svg', None,5),
+                ('building', '"dmgType" LIKE \'building\' AND "civilDmg"= 0 ', filepath + 'building.svg', None,5),
+                ('tree_humanDmg', '"dmgType" LIKE \'tree\' AND "civilDmg"> 0 ', filepath + 'tree_humanDmg.svg', None,8),
+                ('fire_humanDmg', '"dmgType" LIKE \'fire\' AND "civilDmg"> 0', filepath + 'fire_humanDmg.svg', None,8),
+                ('building_humanDmg', '"dmgType" LIKE \'building\' AND "civilDmg"> 0 ', filepath + 'building_humanDmg.svg', None,8),
+            )
+            symbol = QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
+            renderer = QgsRuleBasedRendererV2(symbol)
+            root_rule = renderer.rootRule()
+
+            for label, expression, path, scale, size in event_rules:
+            # create a clone (i.e. a copy) of the default rule
+                rule = root_rule.children()[0].clone()
+                # set the label, expression and color
+                rule.setLabel(label)
+                rule.setFilterExpression(expression)
                 symbol_layer = QgsSvgMarkerSymbolLayerV2()
-                symbol_layer.setSize(5.0)
+                symbol_layer.setSize(size)
                 symbol_layer.setPath(path)
-                symbol = QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
-                symbol.appendSymbolLayer(symbol_layer)
-                symbol.deleteSymbolLayer(0)
-                category = QgsRendererCategoryV2(dmgtype, symbol, label)
-                categories.append(category)
-            expression = 'dmgType'  # field name
-            renderer = QgsCategorizedSymbolRendererV2(expression, categories)
+                rule.symbol().appendSymbolLayer(symbol_layer)
+                rule.symbol().deleteSymbolLayer(0)
+                # set the scale limits if they have been specified
+                if scale is not None:
+                    rule.setScaleMinDenom(scale[0])
+                    rule.setScaleMaxDenom(scale[1])
+                # append the rule to the list of rules
+                root_rule.appendChild(rule)
+
+            # delete the default rule
+            root_rule.removeChildAt(0)
+
+            # apply the renderer to the layer
             self.eventlayer.setRendererV2(renderer)
 
     #######
