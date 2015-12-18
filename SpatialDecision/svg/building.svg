@@ -1,49 +1,74 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="489.682px" height="489.682px" viewBox="0 0 489.682 489.682" style="enable-background:new 0 0 489.682 489.682;"
-	 xml:space="preserve">
-<g>
-	<g>
-		<polygon points="31.38,339.21 110.117,339.21 0,449.325 36.898,486.222 147.013,376.108 147.013,454.843 199.193,454.843 
-			199.193,287.03 31.38,287.03 		"/>
-		<polygon points="458.302,339.21 458.302,287.03 290.488,287.03 290.488,454.843 342.669,454.843 342.669,376.108 452.782,486.222 
-			489.682,449.325 379.564,339.21 		"/>
-		<polygon points="458.302,150.472 379.564,150.472 489.682,40.357 452.782,3.46 342.669,113.574 342.669,34.839 290.488,34.839 
-			290.488,202.652 458.302,202.652 		"/>
-		<polygon points="147.013,113.574 36.898,3.46 0,40.357 110.117,150.472 31.38,150.472 31.38,202.652 199.193,202.652 
-			199.193,34.839 147.013,34.839 		"/>
-	</g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-</svg>
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Capa_1"
+   x="0px"
+   y="0px"
+   width="489.682px"
+   height="489.682px"
+   viewBox="0 0 489.682 489.682"
+   style="enable-background:new 0 0 489.682 489.682;"
+   xml:space="preserve"
+   inkscape:version="0.91 r"
+   sodipodi:docname="building.svg"><metadata
+     id="metadata4311"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs4309" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1543"
+     inkscape:window-height="876"
+     id="namedview4307"
+     showgrid="false"
+     inkscape:zoom="1.5091426"
+     inkscape:cx="136.50134"
+     inkscape:cy="244.841"
+     inkscape:window-x="57"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4267" /><g
+     id="g4265"><g
+       id="g4267"><polygon
+         points="31.38,339.21 110.117,339.21 0,449.325 36.898,486.222 147.013,376.108 147.013,454.843 199.193,454.843     199.193,287.03 31.38,287.03   "
+         id="polygon4269"
+         style="fill:#00aa00;fill-opacity:1" /><polygon
+         points="458.302,339.21 458.302,287.03 290.488,287.03 290.488,454.843 342.669,454.843 342.669,376.108 452.782,486.222     489.682,449.325 379.564,339.21   "
+         id="polygon4271"
+         style="fill:#00aa00;fill-opacity:1" /><polygon
+         points="458.302,150.472 379.564,150.472 489.682,40.357 452.782,3.46 342.669,113.574 342.669,34.839 290.488,34.839     290.488,202.652 458.302,202.652   "
+         id="polygon4273"
+         style="fill:#00aa00;fill-opacity:1" /><polygon
+         points="147.013,113.574 36.898,3.46 0,40.357 110.117,150.472 31.38,150.472 31.38,202.652 199.193,202.652     199.193,34.839 147.013,34.839   "
+         id="polygon4275"
+         style="fill:#00aa00;fill-opacity:1" /></g></g><g
+     id="g4277" /><g
+     id="g4279" /><g
+     id="g4281" /><g
+     id="g4283" /><g
+     id="g4285" /><g
+     id="g4287" /><g
+     id="g4289" /><g
+     id="g4291" /><g
+     id="g4293" /><g
+     id="g4295" /><g
+     id="g4297" /><g
+     id="g4299" /><g
+     id="g4301" /><g
+     id="g4303" /><g
+     id="g4305" /></svg>

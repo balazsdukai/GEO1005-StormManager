@@ -86,13 +86,13 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # visualisation
 
         # reporting
-        self.featureCounterUpdateButton.hide()
-        self.saveMapButton.hide()
-        self.saveMapPathButton.hide()
+        # self.featureCounterUpdateButton.hide()
+        # self.saveMapButton.hide()
+        # self.saveMapPathButton.hide()
         # self.featureCounterUpdateButton.clicked.connect(self.updateNumberFeatures)
         # self.saveMapButton.clicked.connect(self.saveMap)
         # self.saveMapPathButton.clicked.connect(self.selectFile)
-        self.updateAttribute.connect(self.extractAttributeSummary)
+        # self.updateAttribute.connect(self.extractAttributeSummary)
 
         # set current UI restrictions
         self.makeIntersectionButton.hide()
@@ -157,8 +157,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             fields = uf.getFieldNames(layer)
             self.selectAttributeCombo.addItems(fields)
             # send list to the report list window
-            self.clearReport()
-            self.updateReport(fields)
+            #self.clearReport()
+            #self.updateReport(fields)
 
     def setSelectedAttribute(self):
         field_name = self.selectAttributeCombo.currentText()
@@ -172,12 +172,12 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         if (self.eventlayer):
             filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
             event_rules = (
-                ('tree', '"dmgType" LIKE \'tree\' AND "civilDmg"= 0', filepath + 'tree.svg', None,5),
-                ('fire', '"dmgType" LIKE \'fire\' AND "civilDmg"= 0', filepath + 'fire.svg', None,5),
-                ('building', '"dmgType" LIKE \'building\' AND "civilDmg"= 0 ', filepath + 'building.svg', None,5),
-                ('tree_humanDmg', '"dmgType" LIKE \'tree\' AND "civilDmg"> 0 ', filepath + 'tree_humanDmg.svg', None,8),
                 ('fire_humanDmg', '"dmgType" LIKE \'fire\' AND "civilDmg"> 0', filepath + 'fire_humanDmg.svg', None,8),
                 ('building_humanDmg', '"dmgType" LIKE \'building\' AND "civilDmg"> 0 ', filepath + 'building_humanDmg.svg', None,8),
+                ('tree_humanDmg', '"dmgType" LIKE \'tree\' AND "civilDmg"> 0 ', filepath + 'tree_humanDmg.svg', None,8),
+                ('fire', '"dmgType" LIKE \'fire\' AND "civilDmg"= 0', filepath + 'fire.svg', None,8),
+                ('building', '"dmgType" LIKE \'building\' AND "civilDmg"= 0 ', filepath + 'building.svg', None,8),
+                ('tree', '"dmgType" LIKE \'tree\' AND "civilDmg"= 0', filepath + 'tree.svg', None,8)
             )
             symbol = QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
             renderer = QgsRuleBasedRendererV2(symbol)
@@ -464,28 +464,28 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.clearTable()
         self.updateTable(summary)
 
-    # report window functions
-    def updateReport(self, report):
-        self.reportList.clear()
-        self.reportList.addItems(report)
+    # # report window functions
+    # def updateReport(self, report):
+    #     self.reportList.clear()
+    #     self.reportList.addItems(report)
+    #
+    # def insertReport(self, item):
+    #     self.reportList.insertItem(0, item)
+    #
+    # def clearReport(self):
+    #     self.reportList.clear()
 
-    def insertReport(self, item):
-        self.reportList.insertItem(0, item)
-
-    def clearReport(self):
-        self.reportList.clear()
-
-    # table window functions
-    def updateTable(self, values):
-        # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
-        self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
-        self.statisticsTable.setRowCount(len(values))
-        for i, item in enumerate(values):
-            self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
-            self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
-        self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
-        self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
-        self.statisticsTable.resizeRowsToContents()
-
-    def clearTable(self):
-        self.statisticsTable.clear()
+    # # table window functions
+    # def updateTable(self, values):
+    #     # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
+    #     self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
+    #     self.statisticsTable.setRowCount(len(values))
+    #     for i, item in enumerate(values):
+    #         self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
+    #         self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
+    #     self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+    #     self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
+    #     self.statisticsTable.resizeRowsToContents()
+    #
+    # def clearTable(self):
+    #     self.statisticsTable.clear()
