@@ -54,6 +54,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
         self.canvas.setSelectionColor(QtGui.QColor(255, 0, 0))
+
         # set up GUI operation signals
         # data
         self.iface.projectRead.connect(self.updateLayers)
@@ -72,7 +73,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # analysis
         self.graph = QgsGraph()
         self.tied_points = []
-        self.setNetworkButton.clicked.connect(self.buildNetwork)
         self.shortestRouteButton.clicked.connect(self.calculateRoute)
         self.clearRouteButton.clicked.connect(self.deleteRoutes)
         self.serviceAreaButton.clicked.connect(self.calculateServiceArea)
@@ -82,7 +82,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.selectRangeButton.clicked.connect(self.selectFeaturesRange)
         self.expressionSelectButton.clicked.connect(self.selectFeaturesExpression)
         self.expressionFilterButton.clicked.connect(self.filterFeaturesExpression)
-
+        self.assignButton.clicked.connect(self.assignFacility)
+        self.clearAssignmentButton.clicked.connect(self.clearAssignment)
         # visualisation
 
         # reporting
@@ -99,6 +100,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # initialisation
         self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
+        self.facility_name=''
+        self.event_source=self.eventlayer.selectedFeatures()
         self.updateLayers()
 
         # run simple tests
@@ -168,6 +171,12 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         field_name = self.selectAttributeCombo.currentText()
         return field_name
 
+    def getAllFeatures(self,layer):
+        layer.selectAll()
+        allFeatures = layer.selectedFeatures()
+        layer.removeSelection()
+        return allFeatures
+
     def loadSymbols(self):
         if (self.eventlayer):
             filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
@@ -213,7 +222,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
     # route functions
     def getNetwork(self):
-        roads_layer = self.getSelectedLayer()
+        roads_layer = uf.getLegendLayerByName(self.iface,'Roads')
         if roads_layer:
             # see if there is an obstacles layer to subtract roads from the network
             obstacles_layer = uf.getLegendLayerByName(self.iface, "Obstacles")
@@ -229,42 +238,88 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         else:
             return
 
-    def buildNetwork(self):
+    def buildNetwork(self,eventFeature,facilityName):
         self.network_layer = self.getNetwork()
         if self.network_layer:
             # get the points to be used as origin and destination
             # in this case gets the centroid of the selected features
-            selected_sources = self.getSelectedLayer().selectedFeatures()
-            source_points = [feature.geometry().centroid().asPoint() for feature in selected_sources]
+            facilitylayer = uf.getLegendLayerByName(self.iface,facilityName)
+            self.selected_sources = self.getAllFeatures(facilitylayer)
+            self.event_source=eventFeature
+            source_points = [feature.geometry().centroid().asPoint() for feature in self.event_source]
+            source_points.extend([feature.geometry().centroid().asPoint() for feature in self.selected_sources])
             # build the graph including these points
             if len(source_points) > 1:
                 self.graph, self.tied_points = uf.makeUndirectedGraph(self.network_layer, source_points)
                 # the tied points are the new source_points on the graph
                 if self.graph and self.tied_points:
                     text = "network is built for %s points" % len(self.tied_points)
-                    self.insertReport(text)
+                    #self.insertReport(text)
         return
 
-    def calculateRoute(self):
-        # origin and destination must be in the set of tied_points
-        options = len(self.tied_points)
+    def shortestRoute(self,tied_points):
+        options = len(tied_points)
         if options > 1:
             # origin and destination are given as an index in the tied_points list
             origin = 0
-            destination = random.randint(1, options - 1)
-            # calculate the shortest path for the given origin and destination
-            path = uf.calculateRouteDijkstra(self.graph, self.tied_points, origin, destination)
-            # store the route results in temporary layer called "Routes"
-            routes_layer = uf.getLegendLayerByName(self.iface, "Routes")
-            # create one if it doesn't exist
-            if not routes_layer:
-                attribs = ['id']
-                types = [QtCore.QVariant.String]
-                routes_layer = uf.createTempLayer('Routes', 'LINESTRING', self.network_layer.crs().postgisSrid(),
+            temp_lengh=99999
+            shortest_route = QgsFeature()
+            for destination in range(1,options):
+                # calculate the shortest path for the given origin and destination
+                path = uf.calculateRouteDijkstra(self.graph, self.tied_points, origin, destination)
+                #Get length of the geometry QgsGeometry.fromPolyline(path).length()
+                # store the route results in temporary layer called "Routes"
+                routes_layer = uf.getLegendLayerByName(self.iface, "Routes")
+                # create one if it doesn't exist
+                if not routes_layer:
+                    attribs = ['length']
+                    types = [QtCore.QVariant.Double]
+                    routes_layer = uf.createTempLayer('Routes', 'LINESTRING', self.network_layer.crs().postgisSrid(),
                                                   attribs, types)
-                uf.loadTempLayer(routes_layer)
-            # insert route line
-            uf.insertTempFeatures(routes_layer, [path], [['testing', 100.00]])
+                    uf.loadTempLayer(routes_layer)
+
+                # insert route line
+                provider = routes_layer.dataProvider()
+                geometry_type = provider.geometryType()
+                for i, geom in enumerate([path]):
+                    fet = QgsFeature()
+                    if geometry_type == 1:
+                        fet.setGeometry(QgsGeometry.fromPoint(geom))
+                    elif geometry_type == 2:
+                        fet.setGeometry(QgsGeometry.fromPolyline(geom))
+                # in the case of polygons, instead of coordinates we insert the geometry
+                    elif geometry_type == 3:
+                        fet.setGeometry(geom)
+                    route_length = fet.geometry().length()
+                    if route_length<temp_lengh:
+                        temp_lengh=route_length
+                        shortest_route = fet
+                        facility_name= self.selected_sources[destination-1].attribute('name')
+            shortest_route.setAttributes([route_length])
+            provider.addFeatures([shortest_route])
+            provider.updateExtents()
+            return facility_name
+
+    def calculateRoute(self):
+        event = self.eventlayer.selectedFeatures()
+        self.facility_name=''
+        if len(event)!=1:
+            return
+        else:
+            civilDmg = event[0].attribute('civilDmg')
+            if civilDmg ==0:
+                # origin and destination must be in the set of tied_points
+                self.buildNetwork(event,'firestation')
+                self.facility_name='firestation:'
+                self.facility_name+=self.shortestRoute(self.tied_points)
+            else:
+                self.buildNetwork(event,'firestation')
+                self.facility_name='firestation:'
+                self.facility_name+=self.shortestRoute(self.tied_points)
+                self.buildNetwork(event,'hospital')
+                self.facility_name+=' hospital:'
+                self.facility_name+=self.shortestRoute(self.tied_points)
+            routes_layer = uf.getLegendLayerByName(self.iface, "Routes")
             self.refreshCanvas(routes_layer)
 
     def deleteRoutes(self):
@@ -275,6 +330,21 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             for id in ids:
                 routes_layer.deleteFeature(id)
             routes_layer.commitChanges()
+
+    def assignFacility(self):
+        if self.event_source:
+            self.eventlayer.startEditing()
+            self.event_source[0]['unitOnSite']=self.facility_name
+            self.eventlayer.updateFeature(self.event_source[0])
+            self.eventlayer.commitChanges()
+
+    def clearAssignment(self):
+        features=self.eventlayer.selectedFeatures()
+        self.eventlayer.startEditing()
+        for feature in features:
+            feature.setAttribute('unitOnSite','')
+            self.eventlayer.updateFeature(feature)
+        self.eventlayer.commitChanges()
 
     def getServiceAreaCutoff(self):
         cutoff = self.serviceAreaCutoffEdit.text()

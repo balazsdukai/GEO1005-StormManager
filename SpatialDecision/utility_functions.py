@@ -543,9 +543,7 @@ def calculateRouteDijkstra(graph, tied_points, origin, destination, impedance=0)
         if graph:
             from_id = graph.findVertex(from_point)
             to_id = graph.findVertex(to_point)
-
             (tree, cost) = QgsGraphAnalyzer.dijkstra(graph, from_id, impedance)
-
             if tree[to_id] == -1:
                 pass
             else:
