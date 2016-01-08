@@ -1,0 +1,51 @@
+## 18.12.2015
+
+**In order of priority!**
+
+### Routing
+
+Calculate and report the closest fire station/hospital to event locations.
+
+Include "send unit" button
+
+add field "number of fire trucks" to "fire station" layer
+
+### Update symbols
+
+1. symbol colour:
+
++ resolvled = black
+
++ active = red
+
++ add field to reports.shp
+
+2. symbol shape
+
++ no human damage
+
++ human damage
+
+3. symbols for stations
+
++ fire station
+
++ hospital
+
+### Wind chart
+
+1. current wind pie chart (include update button to show current data)
+
+2. wind strengt graph (for the time span in the wind data table)
+
+3. create table with dummy wind speed, direction, time
+
+### Advanced reporting
+
+Tabular view of event attributes
+
+Select event from the table
+
+### GUI
+
+Hide unused layers

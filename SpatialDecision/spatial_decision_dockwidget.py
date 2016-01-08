@@ -100,6 +100,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # initialisation
         self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
+        self.hospitalLayer = uf.getLegendLayerByName(self.iface, 'hospital')
+        self.firestationLayer = uf.getLegendLayerByName(self.iface, 'firestation')
         self.facility_name=''
         self.event_source=self.eventlayer.selectedFeatures()
         self.updateLayers()
@@ -221,6 +223,68 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
             # apply the renderer to the layer
             self.eventlayer.setRendererV2(renderer)
+
+        if (self.hospitalLayer):
+            filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
+            hospital_rules = ('hospital', filepath + 'hospital.svg', None, 5)
+            symbol = QgsSymbolV2.defaultSymbol(self.hospitalLayer.geometryType())
+            renderer = QgsRuleBasedRendererV2(symbol)
+            root_rule = renderer.rootRule()
+
+            label, path, scale, size = hospital_rules
+            # create a clone (i.e. a copy) of the default rule
+            rule = root_rule.children()[0].clone()
+            # set the label, expression and color
+            rule.setLabel(label)
+            #rule.setFilterExpression(expression)
+            symbol_layer = QgsSvgMarkerSymbolLayerV2()
+            symbol_layer.setSize(size)
+            symbol_layer.setPath(path)
+            rule.symbol().appendSymbolLayer(symbol_layer)
+            rule.symbol().deleteSymbolLayer(0)
+            # set the scale limits if they have been specified
+            if scale is not None:
+                rule.setScaleMinDenom(scale[0])
+                rule.setScaleMaxDenom(scale[1])
+            # append the rule to the list of rules
+            root_rule.appendChild(rule)
+
+            # delete the default rule
+            root_rule.removeChildAt(0)
+
+            # apply the renderer to the layer
+            self.hospitalLayer.setRendererV2(renderer)
+
+        if (self.firestationLayer):
+            filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
+            firestation_rules = ('firestation', filepath + 'firestation.svg', None, 5)
+            symbol = QgsSymbolV2.defaultSymbol(self.firestationLayer.geometryType())
+            renderer = QgsRuleBasedRendererV2(symbol)
+            root_rule = renderer.rootRule()
+
+            label, path, scale, size = firestation_rules
+            # create a clone (i.e. a copy) of the default rule
+            rule = root_rule.children()[0].clone()
+            # set the label, expression and color
+            rule.setLabel(label)
+            #rule.setFilterExpression(expression)
+            symbol_layer = QgsSvgMarkerSymbolLayerV2()
+            symbol_layer.setSize(size)
+            symbol_layer.setPath(path)
+            rule.symbol().appendSymbolLayer(symbol_layer)
+            rule.symbol().deleteSymbolLayer(0)
+            # set the scale limits if they have been specified
+            if scale is not None:
+                rule.setScaleMinDenom(scale[0])
+                rule.setScaleMaxDenom(scale[1])
+            # append the rule to the list of rules
+            root_rule.appendChild(rule)
+
+            # delete the default rule
+            root_rule.removeChildAt(0)
+
+            # apply the renderer to the layer
+            self.firestationLayer.setRendererV2(renderer)
 
     #######
     #    Analysis functions

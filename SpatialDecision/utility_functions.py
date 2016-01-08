@@ -93,6 +93,11 @@ def isLayerProjected(layer):
 
 
 def getLegendLayerByName(iface, name):
+    """
+
+    Returns
+    -------
+    """
     layer = None
     for i in iface.legendInterface().layers():
         if i.name() == name:
