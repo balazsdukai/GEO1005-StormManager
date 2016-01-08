@@ -181,12 +181,18 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         if (self.eventlayer):
             filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
             event_rules = (
-                ('fire_humanDmg', '"dmgType" LIKE \'fire\' AND "civilDmg"> 0', filepath + 'fire_humanDmg.svg', None,8),
-                ('building_humanDmg', '"dmgType" LIKE \'building\' AND "civilDmg"> 0 ', filepath + 'building_humanDmg.svg', None,8),
-                ('tree_humanDmg', '"dmgType" LIKE \'tree\' AND "civilDmg"> 0 ', filepath + 'tree_humanDmg.svg', None,8),
-                ('fire', '"dmgType" LIKE \'fire\' AND "civilDmg"= 0', filepath + 'fire.svg', None,8),
-                ('building', '"dmgType" LIKE \'building\' AND "civilDmg"= 0 ', filepath + 'building.svg', None,8),
-                ('tree', '"dmgType" LIKE \'tree\' AND "civilDmg"= 0', filepath + 'tree.svg', None,8)
+                ('fire_active_humanDmg', '"dmgType" LIKE fire AND "resolved" LIKE no AND "civilDmg"> 0', filepath + 'fire_active_humanDmg.svg', None,10),
+                ('building_active_humanDmg', '"dmgType" LIKE \'building\' AND "resolved" LIKE \'no\' AND "civilDmg"> 0 ', filepath + 'building_active_humanDmg.svg', None,10),
+                ('tree_active_humanDmg', '"dmgType" LIKE \'tree\' AND "resolved" LIKE \'no\' AND "civilDmg"> 0 ', filepath + 'tree_active_humanDmg.svg', None,10),
+                ('fire_active', '"dmgType" LIKE \'fire\' AND "resolved" LIKE \'no\' AND "civilDmg"= 0', filepath + 'fire_active.svg', None,8),
+                ('building_active', '"dmgType" LIKE \'building\' AND "resolved" LIKE \'no\' AND "civilDmg"= 0 ', filepath + 'building_active.svg', None,8),
+                ('tree_active', '"dmgType" LIKE \'tree\' AND "resolved" LIKE \'no\' AND "civilDmg"= 0', filepath + 'tree_active.svg', None,8),
+                ('fire_resolved_humanDmg', '"dmgType" LIKE fire AND "resolved" LIKE yes AND "civilDmg"> 0', filepath + 'fire_resolved_humanDmg.svg', None,10),
+                ('building_resolved_humanDmg', '"dmgType" LIKE \'building\' AND "resolved" LIKE \'yes\' AND "civilDmg"> 0 ', filepath + 'building_resolved_humanDmg.svg', None,10),
+                ('tree_resolved_humanDmg', '"dmgType" LIKE \'tree\' AND "resolved" LIKE \'yes\' AND "civilDmg"> 0 ', filepath + 'tree_resolved_humanDmg.svg', None,10),
+                ('fire_resolved', '"dmgType" LIKE \'fire\' AND "resolved" LIKE \'yes\' AND "civilDmg"= 0', filepath + 'fire_resolved.svg', None,8),
+                ('building_resolved', '"dmgType" LIKE \'building\' AND "resolved" LIKE \'yes\' AND "civilDmg"= 0 ', filepath + 'building_resolved.svg', None,8),
+                ('tree_resolved', '"dmgType" LIKE \'tree\' AND "resolved" LIKE \'yes\' AND "civilDmg"= 0', filepath + 'tree_resolved.svg', None,8)
             )
             symbol = QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
             renderer = QgsRuleBasedRendererV2(symbol)

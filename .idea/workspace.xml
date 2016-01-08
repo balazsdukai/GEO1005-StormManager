@@ -2,15 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e068776-b2cf-4af4-9ef1-53140d1a627b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/reports_style.qlr" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/reports_style.qml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.qml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget_base.ui" afterPath="$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget_base.ui" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/SpatialDecision/svg/building.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/SpatialDecision/svg/building_humanDmg.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/SpatialDecision/svg/fire.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/SpatialDecision/svg/fire_humanDmg.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/SpatialDecision/svg/tree.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/SpatialDecision/svg/tree_humanDmg.svg" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/work/reports.dbf" afterPath="$PROJECT_DIR$/work/reports.dbf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/work/reports.shp" afterPath="$PROJECT_DIR$/work/reports.shp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/work/reports.shx" afterPath="$PROJECT_DIR$/work/reports.shx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py" afterPath="$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpatialDecision/svg/building.svg" afterPath="$PROJECT_DIR$/SpatialDecision/svg/building.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpatialDecision/svg/fire.svg" afterPath="$PROJECT_DIR$/SpatialDecision/svg/fire.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpatialDecision/svg/tree.svg" afterPath="$PROJECT_DIR$/SpatialDecision/svg/tree.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stormManager.qgs" afterPath="$PROJECT_DIR$/stormManager.qgs" />
     </list>
     <ignored path="GEO1005-StormManager.iws" />
@@ -47,8 +49,8 @@
       <file leaf-file-name="spatial_decision_dockwidget.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.49863762">
-              <caret line="93" column="65" selection-start-line="93" selection-start-column="65" selection-end-line="93" selection-end-column="65" />
+            <state vertical-scroll-proportion="0.2948052">
+              <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -58,7 +60,7 @@
         <entry file="file://$PROJECT_DIR$/SpatialDecision/utility_functions.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="430" column="18" selection-start-line="430" selection-start-column="13" selection-end-line="430" selection-end-column="18" />
+              <caret line="429" column="18" selection-start-line="430" selection-start-column="13" selection-end-line="430" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -108,7 +110,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -144,6 +145,7 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -410,6 +412,58 @@
     <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="16" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="16" />
+          <folding>
+            <element signature="e#1170#1249#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpatialDecision/utility_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="430" column="18" selection-start-line="430" selection-start-column="13" selection-end-line="430" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="16" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="16" />
+          <folding>
+            <element signature="e#1170#1249#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpatialDecision/utility_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="430" column="18" selection-start-line="430" selection-start-column="13" selection-end-line="430" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="250" column="22" selection-start-line="250" selection-start-column="17" selection-end-line="250" selection-end-column="22" />
           <folding>
             <element signature="e#1170#1249#0" expanded="true" />
@@ -487,15 +541,15 @@
     <entry file="file://$PROJECT_DIR$/SpatialDecision/utility_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="430" column="18" selection-start-line="430" selection-start-column="13" selection-end-line="430" selection-end-column="18" />
+          <caret line="429" column="18" selection-start-line="430" selection-start-column="13" selection-end-line="430" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49863762">
-          <caret line="93" column="65" selection-start-line="93" selection-start-column="65" selection-end-line="93" selection-end-column="65" />
+        <state vertical-scroll-proportion="0.2948052">
+          <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
           <folding />
         </state>
       </provider>
