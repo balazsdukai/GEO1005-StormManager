@@ -109,7 +109,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.chart_subplot_radar = self.chart_figure.add_subplot(211, projection='polar')
         self.chart_subplot_bar = self.chart_figure.add_subplot(212)
         self.chart_figure.tight_layout()
-        #self.chart_figure.suptitle('date', fontsize = 14, fontweight='bold', horizontalalignment = 'right')
         self.chart_figure.text(0.05, 0.95, self.getWindDate(), fontsize = 14, fontweight='bold', horizontalalignment = 'left')
         self.chart_canvas = FigureCanvas(self.chart_figure)
         self.chartLayout.addWidget(self.chart_canvas)
@@ -616,7 +615,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
             # dangerous windspeed
             self.chart_subplot_bar.hlines(120, xmin=min(starttime), xmax=max(starttime), colors='r')
-            self.chart_subplot_bar.annotate('highly dangerous windspeed', xy=(.75, .85), xycoords='axes fraction',
+            self.chart_subplot_bar.annotate('safety hazard', xy=(.85, .82), xycoords='axes fraction',
                             horizontalalignment='center', verticalalignment='center', color = 'r')
             self.chart_subplot_bar.annotate('[kmh]', xy=(-0, 1), xycoords='axes fraction',
                             horizontalalignment='right', verticalalignment='bottom')
@@ -633,6 +632,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # draw all the plots
         self.chart_canvas.draw()
+
 
     # example_chart
     def clearChart(self):
