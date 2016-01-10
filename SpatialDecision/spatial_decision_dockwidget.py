@@ -75,15 +75,9 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.tied_points = []
         self.shortestRouteButton.clicked.connect(self.calculateRoute)
         self.clearRouteButton.clicked.connect(self.deleteRoutes)
-        self.serviceAreaButton.clicked.connect(self.calculateServiceArea)
-        self.bufferButton.clicked.connect(self.calculateBuffer)
-        self.selectBufferButton.clicked.connect(self.selectFeaturesBuffer)
-        self.makeIntersectionButton.clicked.connect(self.calculateIntersection)
-        self.selectRangeButton.clicked.connect(self.selectFeaturesRange)
-        self.expressionSelectButton.clicked.connect(self.selectFeaturesExpression)
-        self.expressionFilterButton.clicked.connect(self.filterFeaturesExpression)
         self.assignButton.clicked.connect(self.assignFacility)
         self.clearAssignmentButton.clicked.connect(self.clearAssignment)
+        self.changeStatusButton.clicked.connect(self.changeEventStatus)
         # visualisation
 
         # reporting
@@ -96,13 +90,13 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # self.updateAttribute.connect(self.extractAttributeSummary)
 
         # set current UI restrictions
-        self.makeIntersectionButton.hide()
 
         # initialisation
         self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
         self.hospitalLayer = uf.getLegendLayerByName(self.iface, 'hospital')
         self.firestationLayer = uf.getLegendLayerByName(self.iface, 'firestation')
-        self.facility_name=''
+        self.hospital_name=''
+        self.firestation_name=''
         self.event_source=self.eventlayer.selectedFeatures()
         self.updateLayers()
 
@@ -183,7 +177,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         if (self.eventlayer):
             filepath = os.path.join(os.path.dirname(__file__), 'svg', '')
             event_rules = (
-                ('fire_active_humanDmg', '"dmgType" LIKE fire AND "resolved" LIKE no AND "civilDmg"> 0', filepath + 'fire_active_humanDmg.svg', None,10),
+                ('fire_active_humanDmg', '"dmgType" LIKE fire AND "resolved" is\ "no" AND "civilDmg"> 0', filepath + 'fire_active_humanDmg.svg', None,10),
                 ('building_active_humanDmg', '"dmgType" LIKE \'building\' AND "resolved" LIKE \'no\' AND "civilDmg"> 0 ', filepath + 'building_active_humanDmg.svg', None,10),
                 ('tree_active_humanDmg', '"dmgType" LIKE \'tree\' AND "resolved" LIKE \'no\' AND "civilDmg"> 0 ', filepath + 'tree_active_humanDmg.svg', None,10),
                 ('fire_active', '"dmgType" LIKE \'fire\' AND "resolved" LIKE \'no\' AND "civilDmg"= 0', filepath + 'fire_active.svg', None,8),
@@ -325,7 +319,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 if self.graph and self.tied_points:
                     text = "network is built for %s points" % len(self.tied_points)
                     #self.insertReport(text)
-        return
 
     def shortestRoute(self,tied_points):
         options = len(tied_points)
@@ -372,23 +365,21 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
     def calculateRoute(self):
         event = self.eventlayer.selectedFeatures()
-        self.facility_name=''
+        self.hospital_name=''
+        self.firestation_name=''
         if len(event)!=1:
             return
         else:
             civilDmg = event[0].attribute('civilDmg')
-            if civilDmg ==0:
+            if civilDmg ==0 :
                 # origin and destination must be in the set of tied_points
                 self.buildNetwork(event,'firestation')
-                self.facility_name='firestation:'
-                self.facility_name+=self.shortestRoute(self.tied_points)
+                self.firestation_name=self.shortestRoute(self.tied_points)
             else:
                 self.buildNetwork(event,'firestation')
-                self.facility_name='firestation:'
-                self.facility_name+=self.shortestRoute(self.tied_points)
+                self.firestation_name=self.shortestRoute(self.tied_points)
                 self.buildNetwork(event,'hospital')
-                self.facility_name+=' hospital:'
-                self.facility_name+=self.shortestRoute(self.tied_points)
+                self.hospital_name=self.shortestRoute(self.tied_points)
             routes_layer = uf.getLegendLayerByName(self.iface, "Routes")
             self.refreshCanvas(routes_layer)
 
@@ -402,125 +393,75 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             routes_layer.commitChanges()
 
     def assignFacility(self):
-        if self.event_source:
-            self.eventlayer.startEditing()
-            self.event_source[0]['unitOnSite']=self.facility_name
-            self.eventlayer.updateFeature(self.event_source[0])
-            self.eventlayer.commitChanges()
+        self.event_source=self.eventlayer.selectedFeatures()
+        if len(self.event_source)!=1:
+            return
+        if isinstance(self.event_source[0]['unitOnSite'],QtCore.QPyNullVariant)==True:
+            self.event_source[0]['unitOnSite']=''
+        self.eventlayer.startEditing()
+        firestationString=''
+        hospitalString=''
+        if self.event_source[0]['unitOnSite'].find('firestation:')!=-1 and self.event_source[0]['unitOnSite'].find('hospital:')!=-1:
+            firestationString=self.event_source[0]['unitOnSite'].split(' hospital:')[0][12:]
+            hospitalString=self.event_source[0]['unitOnSite'].split(' hospital:')[1]
+        elif self.event_source[0]['unitOnSite'].find('firestation:')!=-1 and self.event_source[0]['unitOnSite'].find('hospital:')==-1:
+            firestationString=self.event_source[0]['unitOnSite'].split('firestation:')[1]
+        elif self.event_source[0]['unitOnSite'].find('firestation:')==-1 and self.event_source[0]['unitOnSite'].find('hospital:')!=-1:
+            hospitalString=self.event_source[0]['unitOnSite'].split('hospital:')[1]
+        firestationlist=[]
+        hospitallist=[]
+        for i in range(self.firestationLayer.selectedFeatureCount()):
+            if firestationString.find(self.firestationLayer.selectedFeatures()[i].attribute('name'))==-1:
+                firestationlist.append(self.firestationLayer.selectedFeatures()[i].attribute('name'))
+        for i in range(self.hospitalLayer.selectedFeatureCount()):
+            if hospitalString.find(self.hospitalLayer.selectedFeatures()[i].attribute('name'))==-1:
+                hospitallist.append(self.hospitalLayer.selectedFeatures()[i].attribute('name'))
+        delimiter=','
+        self.event_source[0]['unitOnSite']=''
+        firestationresult=[]
+        hospitalresult=[]
+        if firestationString+delimiter.join(firestationlist)+self.firestation_name!='':
+            firestationresult.extend([firestationString])
+            firestationresult.extend(firestationlist)
+            if firestationString.find(self.firestation_name)==-1:
+                firestationresult.extend([self.firestation_name])
+            if '' in firestationresult:
+                firestationresult.remove('')
+            self.event_source[0]['unitOnSite']+='firestation:'+delimiter.join(firestationresult)
+        if hospitalString+delimiter.join(hospitallist)+self.hospital_name!='':
+            hospitalresult.extend([hospitalString])
+            hospitalresult.extend(hospitallist)
+            if hospitalString.find(self.hospital_name)==-1:
+                hospitalresult.extend([self.hospital_name])
+            if '' in hospitalresult:
+                hospitalresult.remove('')
+            self.event_source[0]['unitOnSite']+=' hospital:'+delimiter.join(hospitalresult)
+        self.eventlayer.updateFeature(self.event_source[0])
+        self.eventlayer.commitChanges()
+        self.hospital_name=''
+        self.firestation_name=''
 
     def clearAssignment(self):
         features=self.eventlayer.selectedFeatures()
         self.eventlayer.startEditing()
         for feature in features:
-            feature.setAttribute('unitOnSite','')
+            feature.setAttribute('unitOnSite',QtCore.QPyNullVariant)
             self.eventlayer.updateFeature(feature)
         self.eventlayer.commitChanges()
-
-    def getServiceAreaCutoff(self):
-        cutoff = self.serviceAreaCutoffEdit.text()
-        if uf.isNumeric(cutoff):
-            return uf.convertNumeric(cutoff)
+    def changeEventStatus(self):
+        self.event_source=self.eventlayer.selectedFeatures()
+        if len(self.event_source)!=1:
+            return
         else:
-            return 0
-
-    def calculateServiceArea(self):
-        options = len(self.tied_points)
-        if options > 0:
-            # origin is given as an index in the tied_points list
-            origin = random.randint(1, options - 1)
-            cutoff_distance = self.getServiceAreaCutoff()
-            if cutoff_distance == 0:
-                return
-            service_area = uf.calculateServiceArea(self.graph, self.tied_points, origin, cutoff_distance)
-            # store the service area results in temporary layer called "Service_Area"
-            area_layer = uf.getLegendLayerByName(self.iface, "Service_Area")
-            # create one if it doesn't exist
-            if not area_layer:
-                attribs = ['cost']
-                types = [QtCore.QVariant.Double]
-                area_layer = uf.createTempLayer('Service_Area', 'POINT', self.network_layer.crs().postgisSrid(),
-                                                attribs, types)
-                uf.loadTempLayer(area_layer)
-            # insert service area points
-            geoms = []
-            values = []
-            for point in service_area.itervalues():
-                # each point is a tuple with geometry and cost
-                geoms.append(point[0])
-                # in the case of values, it expects a list of multiple values in each item - list of lists
-                values.append([cutoff_distance])
-            uf.insertTempFeatures(area_layer, geoms, values)
-            self.refreshCanvas(area_layer)
-
-    # buffer functions
-    def getBufferCutoff(self):
-        cutoff = self.bufferCutoffEdit.text()
-        if uf.isNumeric(cutoff):
-            return uf.convertNumeric(cutoff)
-        else:
-            return 0
-
-    def calculateBuffer(self):
-        origins = self.getSelectedLayer().selectedFeatures()
-        layer = self.getSelectedLayer()
-        if origins > 0:
-            cutoff_distance = self.getBufferCutoff()
-            buffers = {}
-            for point in origins:
-                geom = point.geometry()
-                buffers[point.id()] = geom.buffer(cutoff_distance, 12)
-            # store the buffer results in temporary layer called "Buffers"
-            buffer_layer = uf.getLegendLayerByName(self.iface, "Buffers")
-            # create one if it doesn't exist
-            if not buffer_layer:
-                attribs = ['id', 'distance']
-                types = [QtCore.QVariant.String, QtCore.QVariant.Double]
-                buffer_layer = uf.createTempLayer('Buffers', 'POLYGON', layer.crs().postgisSrid(), attribs, types)
-                uf.loadTempLayer(buffer_layer)
-            # insert buffer polygons
-            geoms = []
-            values = []
-            for buffer in buffers.iteritems():
-                # each buffer has an id and a geometry
-                geoms.append(buffer[1])
-                # in the case of values, it expects a list of multiple values in each item - list of lists
-                values.append([buffer[0], cutoff_distance])
-            uf.insertTempFeatures(buffer_layer, geoms, values)
-            self.refreshCanvas(buffer_layer)
-
-    def calculateIntersection(self):
-        # use the buffer to cut from another layer
-        cutter = uf.getLegendLayerByName(self.iface, "Buffers")
-        # use the selected layer for cutting
-        layer = self.getSelectedLayer()
-        if cutter.featureCount() > 0:
-            # get the intersections between the two layers
-            intersections = uf.getFeaturesIntersections(layer, cutter)
-            if intersections:
-                # store the intersection geometries results in temporary layer called "Intersections"
-                intersection_layer = uf.getLegendLayerByName(self.iface, "Intersections")
-                # create one if it doesn't exist
-                if not intersection_layer:
-                    geom_type = intersections[0].type()
-                    if geom_type == 1:
-                        intersection_layer = uf.createTempLayer('Intersections', 'POINT', layer.crs().postgisSrid(), [],
-                                                                [])
-                    elif geom_type == 2:
-                        intersection_layer = uf.createTempLayer('Intersections', 'LINESTRING',
-                                                                layer.crs().postgisSrid(), [], [])
-                    elif geom_type == 3:
-                        intersection_layer = uf.createTempLayer('Intersections', 'POLYGON', layer.crs().postgisSrid(),
-                                                                [], [])
-                    uf.loadTempLayer(intersection_layer)
-                # insert buffer polygons
-                geoms = []
-                values = []
-                for intersect in intersections:
-                    # each buffer has an id and a geometry
-                    geoms.append(intersect)
-                uf.insertTempFeatures(intersection_layer, geoms, values)
-                self.refreshCanvas(intersection_layer)
-
+            self.eventlayer.startEditing()
+            if self.event_source[0]['resolved']=='yes':
+                self.event_source[0]['resolved']='no'
+            else:
+                self.event_source[0]['resolved']='yes'
+            self.eventlayer.updateFeature(self.event_source[0])
+            self.eventlayer.commitChanges()
+            self.loadSymbols()
+            self.canvas.refresh()
     # after adding features to layers needs a refresh (sometimes)
     def refreshCanvas(self, layer):
         if self.canvas.isCachingEnabled():
@@ -546,14 +487,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             if fields:
                 # selects features with values in the range
                 uf.selectFeaturesByRangeValues(layer, fields[0].name(), min, max)
-
-    def selectFeaturesExpression(self):
-        layer = self.getSelectedLayer()
-        uf.selectFeaturesByExpression(layer, self.expressionEdit.text())
-
-    def filterFeaturesExpression(self):
-        layer = self.getSelectedLayer()
-        uf.filterFeaturesByExpression(layer, self.expressionEdit.text())
 
     #######
     #    Visualisation functions
