@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="sampleWidgets">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="dataTab">
        <attribute name="title">
@@ -121,7 +121,7 @@
         <item row="3" column="0" colspan="2">
          <widget class="QPushButton" name="changeStatusButton">
           <property name="text">
-           <string>chageEventStatus</string>
+           <string>Active/Resolved Event</string>
           </property>
          </widget>
         </item>

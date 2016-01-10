@@ -109,6 +109,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.chart_subplot_radar = self.chart_figure.add_subplot(211, projection='polar')
         self.chart_subplot_bar = self.chart_figure.add_subplot(212)
         self.chart_figure.tight_layout()
+        #self.chart_figure.suptitle('date', fontsize = 14, fontweight='bold', horizontalalignment = 'right')
+        self.chart_figure.text(0.05, 0.95, self.getWindDate(), fontsize = 14, fontweight='bold', horizontalalignment = 'left')
         self.chart_canvas = FigureCanvas(self.chart_figure)
         self.chartLayout.addWidget(self.chart_canvas)
 
@@ -537,6 +539,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         if plot_layer:
             starttime = uf.getAllFeatureValues(plot_layer, 'starttime')
             starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
+            #starttime = [hours.time() for hours in starttime]
             direction = uf.getAllFeatureValues(plot_layer, 'direction')
             speed = uf.getAllFeatureValues(plot_layer, 'speed')
 
@@ -610,13 +613,23 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             self.chart_subplot_bar.cla()
             self.chart_subplot_bar.bar(starttime, speed, width=0.03, align='center')
             self.chart_subplot_bar.set_ylim(bottom=0, top=150)
-            self.chart_subplot_bar.hlines(120, xmin=min(starttime), xmax=max(starttime), colors='r', \
-                                          label='Withdraw all units')
-            self.chart_subplot_bar.legend()
-            # set x-axis labels 
+
+            # dangerous windspeed
+            self.chart_subplot_bar.hlines(120, xmin=min(starttime), xmax=max(starttime), colors='r')
+            self.chart_subplot_bar.annotate('highly dangerous windspeed', xy=(.75, .85), xycoords='axes fraction',
+                            horizontalalignment='center', verticalalignment='center', color = 'r')
+            self.chart_subplot_bar.annotate('[kmh]', xy=(-0, 1), xycoords='axes fraction',
+                            horizontalalignment='right', verticalalignment='bottom')
+
+            # set x-axis labels
             labels = [time.strftime('%H:%M') for time in starttime]
             self.chart_subplot_bar.set_xticks(starttime)
             self.chart_subplot_bar.set_xticklabels(labels, rotation = 'vertical')
+
+            # # current time
+            # current_time = dt.datetime.now().time()
+            # self.chart_subplot_bar.vlines(current_time, ymin=0, ymax=140, linestyles = 'dotted')
+
 
         # draw all the plots
         self.chart_canvas.draw()
@@ -626,6 +639,18 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.chart_subplot_radar.cla()
         self.chart_subplot_bar.cla()
         self.chart_canvas.draw()
+
+    def getWindDate(self):
+        """
+        Returns
+        -------
+        String. The date part of the first timestamp in the wind data.
+        """
+        layer = uf.getLegendLayerByName(self.iface, 'wind')
+        starttime = uf.getAllFeatureValues(layer, 'starttime')
+        starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
+        date = starttime[0].strftime('%Y-%m-%d')
+        return date
 
     #######
     #    Reporting functions
