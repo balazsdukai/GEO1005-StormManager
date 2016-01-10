@@ -39,7 +39,10 @@ import datetime as dt
 import numpy as np
 # import pandas as pd
 from matplotlib.ticker import FuncFormatter
+import math
 from matplotlib import pyplot as plt
+from matplotlib import colors
+import matplotlib.cm as cm
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
         os.path.dirname(__file__), 'spatial_decision_dockwidget_base.ui'))
@@ -109,7 +112,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.chart_subplot_radar = self.chart_figure.add_subplot(211, projection='polar')
         self.chart_subplot_bar = self.chart_figure.add_subplot(212)
         self.chart_figure.tight_layout()
-        self.chart_figure.text(0.05, 0.95, self.getWindDate(), fontsize = 14, fontweight='bold', horizontalalignment = 'left')
+        self.chart_figure.text(0.05, 0.955, 'Data from:', fontsize = 12, horizontalalignment = 'left')
+        self.chart_figure.text(0.05, 0.93, self.getWindDate(), fontsize = 12, fontweight='bold', horizontalalignment = 'left')
         self.chart_canvas = FigureCanvas(self.chart_figure)
         self.chartLayout.addWidget(self.chart_canvas)
 
@@ -534,11 +538,16 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
     # example_chart
     def plotChart(self):
+        """
+        Adapted from Jorge Gil.
+        Returns
+        -------
+        Draws the maplotlib figures. The wind rose plot and the wind speed bar plot.
+        """
         plot_layer = uf.getLegendLayerByName(self.iface, 'wind')  # in my case it is fixed to the wind layer
         if plot_layer:
             starttime = uf.getAllFeatureValues(plot_layer, 'starttime')
             starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
-            #starttime = [hours.time() for hours in starttime]
             direction = uf.getAllFeatureValues(plot_layer, 'direction')
             speed = uf.getAllFeatureValues(plot_layer, 'speed')
 
@@ -549,6 +558,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             # #     Plots a Wind Rose. Feed it a dataframe with 'speed'(kmh) and
             # #     'direction' degrees clockwise from north (columns)
             # #     '''
+            # self.chart_subplot_radar.cla()
+            #
             # d = {'starttime': starttime, 'direction': uf.getAllFeatureValues(plot_layer, 'direction'),
             #      'speed': uf.getAllFeatureValues(plot_layer, 'speed')
             #      }
@@ -577,40 +588,46 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             # self.chart_subplot_radar.set_theta_direction('clockwise')
             #
             # # speed bins and colors
-            # speedBins = [60, 50]
-            # colors = ['#579443', '#0066FF']#, '#990000', '#FF4719', '#FFCC00', '#579443', '#0066FF']
+            # def _roundup(x):
+            #     return int(math.ceil(x / 10.0)) * 10
+            #
+            # speedBins = list(sorted(set([_roundup(n) for n in speed])).__reversed__())
+            # norm = colors.Normalize(vmin=min(speedBins), vmax=max(speedBins)) # normalize the colors to the range of windspeed
             #
             # # number of total and zero-wind observations
             # total = np.float(dataframe.shape[0])
             # factor = 1
             # units = 'kmh'
-            #
-            # calm = np.float(dataframe[dataframe[speedcol] == 0].shape[0])/total * 100
+            # # calm = np.float(dataframe[dataframe[speedcol] == 0].shape[0])/total * 100
             #
             # # loop through the speed bins
-            # for spd, clr in zip(speedBins, colors):
+            # for spd in speedBins:
             #     barLen = _get_wind_counts(dataframe, spd, speedcol, dircol, factor=factor)
             #     barLen = barLen/total
             #     barDir, barWidth = _convert_dir_to_left_radian(np.array(barLen.index))
             #     self.chart_subplot_radar.bar(barDir, barLen, width=barWidth, linewidth=0.50,
-            #             edgecolor=(0.25, 0.25, 0.25), color=clr, alpha=0.8,
+            #             edgecolor=(0.25, 0.25, 0.25), color=cm.jet(norm(spd)), alpha=0.8,
             #             label=r"<%d %s" % (spd, units))
             #
             # # format the plot's axes
-            # self.chart_subplot_radar.legend(loc='lower right', bbox_to_anchor=(1.10, -0.13), fontsize=8)
+            # self.chart_subplot_radar.legend(loc='lower right', bbox_to_anchor=(1.25, -0.13), fontsize=8)
             # self.chart_subplot_radar.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
             # self.chart_subplot_radar.xaxis.grid(True, which='major', color='k', alpha=0.5)
             # self.chart_subplot_radar.yaxis.grid(True, which='major', color='k', alpha=0.5)
             # self.chart_subplot_radar.yaxis.set_major_formatter(FuncFormatter(_pct_fmt))
-            # #self.chart_subplot_radar.text(0.05, 0.95, 'Calm Winds: %0.1f%%' % calm)
-            # #if calm >= 0.1:
+            # # self.chart_subplot_radar.text(0.05, 0.95, 'Calm Winds: %0.1f%%' % calm)
+            # # if calm >= 0.1:
             # #   self.chart_subplot_radar.set_ylim(ymin=np.floor(calm*10)/10.)
 
             # ======================
             # draw windspeed bar plot
             # x = time, y = wind speed
             self.chart_subplot_bar.cla()
-            self.chart_subplot_bar.bar(starttime, speed, width=0.03, align='center')
+            # loop through the speed bins
+            norm = colors.Normalize(min(speed), max(speed))
+            for spd, time in zip(speed, starttime):
+                self.chart_subplot_bar.bar(time, spd, width=0.03, align = 'center',
+                        edgecolor=(0.25, 0.25, 0.25), color=cm.jet(norm(spd)), alpha=0.8)
             self.chart_subplot_bar.set_ylim(bottom=0, top=150)
 
             # dangerous windspeed
@@ -625,14 +642,14 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             self.chart_subplot_bar.set_xticks(starttime)
             self.chart_subplot_bar.set_xticklabels(labels, rotation = 'vertical')
 
-            # # current time
+            # # Mark the current time with a vertical line — not implemented due to differring time between
+            # # datetime.datetime.now().time() and the date range used in the simulation data. It would work with
+            # # real-time dataset.
             # current_time = dt.datetime.now().time()
             # self.chart_subplot_bar.vlines(current_time, ymin=0, ymax=140, linestyles = 'dotted')
 
-
         # draw all the plots
         self.chart_canvas.draw()
-
 
     # example_chart
     def clearChart(self):
