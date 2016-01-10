@@ -31,8 +31,18 @@ import os.path
 import random
 from . import utility_functions as uf
 
+# example_chart
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+from matplotlib import dates
+import datetime as dt
+import numpy as np
+import pandas as pd
+from matplotlib.ticker import FuncFormatter
+from matplotlib import pyplot as plt
+
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'spatial_decision_dockwidget_base.ui'))
+        os.path.dirname(__file__), 'spatial_decision_dockwidget_base.ui'))
 
 
 class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
@@ -70,6 +80,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # signals
         self.canvas.renderStarting.connect(self.loadSymbols)
         self.canvas.selectionChanged.connect(self.updateValueWidget)
+
         # analysis
         self.graph = QgsGraph()
         self.tied_points = []
@@ -78,6 +89,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.assignButton.clicked.connect(self.assignFacility)
         self.clearAssignmentButton.clicked.connect(self.clearAssignment)
         self.changeStatusButton.clicked.connect(self.changeEventStatus)
+
         # visualisation
 
         # reporting
@@ -90,6 +102,15 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # self.updateAttribute.connect(self.extractAttributeSummary)
 
         # set current UI restrictions
+
+        # example_chart
+        # add matplotlib Figure to chartFrame
+        self.chart_figure = Figure()
+        self.chart_subplot_radar = self.chart_figure.add_subplot(211, projection='polar')
+        self.chart_subplot_bar = self.chart_figure.add_subplot(212)
+        self.chart_figure.tight_layout()
+        self.chart_canvas = FigureCanvas(self.chart_figure)
+        self.chartLayout.addWidget(self.chart_canvas)
 
         # initialisation
         self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
@@ -139,6 +160,9 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             layer_names = uf.getLayersListNames(layers)
             self.selectLayerCombo.addItems(layer_names)
             self.setSelectedLayer()
+            self.plotChart()
+        else:
+            self.clearChart()  # example_chart
 
     def setSelectedLayer(self):
         layer_name = self.selectLayerCombo.currentText()
@@ -154,10 +178,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.selectAttributeCombo.clear()
         if layer:
             fields = uf.getFieldNames(layer)
+            self.clearChart()
             self.selectAttributeCombo.addItems(fields)
             # send list to the report list window
-            #self.clearReport()
-            #self.updateReport(fields)
+            # self.clearReport()
+            # self.updateReport(fields)
 
     def setSelectedAttribute(self):
         field_name = self.selectAttributeCombo.currentText()
@@ -167,7 +192,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         field_name = self.selectAttributeCombo.currentText()
         return field_name
 
-    def getAllFeatures(self,layer):
+    def getAllFeatures(self, layer):
         layer.selectAll()
         allFeatures = layer.selectedFeatures()
         layer.removeSelection()
@@ -189,13 +214,14 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 ('fire_resolved', '"dmgType" LIKE \'fire\' AND "resolved" LIKE \'yes\' AND "civilDmg"= 0', filepath + 'fire_resolved.svg', None,8),
                 ('building_resolved', '"dmgType" LIKE \'building\' AND "resolved" LIKE \'yes\' AND "civilDmg"= 0 ', filepath + 'building_resolved.svg', None,8),
                 ('tree_resolved', '"dmgType" LIKE \'tree\' AND "resolved" LIKE \'yes\' AND "civilDmg"= 0', filepath + 'tree_resolved.svg', None,8)
+
             )
             symbol = QgsSymbolV2.defaultSymbol(self.eventlayer.geometryType())
             renderer = QgsRuleBasedRendererV2(symbol)
             root_rule = renderer.rootRule()
 
             for label, expression, path, scale, size in event_rules:
-            # create a clone (i.e. a copy) of the default rule
+                # create a clone (i.e. a copy) of the default rule
                 rule = root_rule.children()[0].clone()
                 # set the label, expression and color
                 rule.setLabel(label)
@@ -230,7 +256,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             rule = root_rule.children()[0].clone()
             # set the label, expression and color
             rule.setLabel(label)
-            #rule.setFilterExpression(expression)
+            # rule.setFilterExpression(expression)
             symbol_layer = QgsSvgMarkerSymbolLayerV2()
             symbol_layer.setSize(size)
             symbol_layer.setPath(path)
@@ -261,7 +287,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             rule = root_rule.children()[0].clone()
             # set the label, expression and color
             rule.setLabel(label)
-            #rule.setFilterExpression(expression)
+            # rule.setFilterExpression(expression)
             symbol_layer = QgsSvgMarkerSymbolLayerV2()
             symbol_layer.setSize(size)
             symbol_layer.setPath(path)
@@ -286,7 +312,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
     # route functions
     def getNetwork(self):
-        roads_layer = uf.getLegendLayerByName(self.iface,'Roads')
+        roads_layer = uf.getLegendLayerByName(self.iface, 'Roads')
         if roads_layer:
             # see if there is an obstacles layer to subtract roads from the network
             obstacles_layer = uf.getLegendLayerByName(self.iface, "Obstacles")
@@ -302,14 +328,14 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         else:
             return
 
-    def buildNetwork(self,eventFeature,facilityName):
+    def buildNetwork(self, eventFeature, facilityName):
         self.network_layer = self.getNetwork()
         if self.network_layer:
             # get the points to be used as origin and destination
             # in this case gets the centroid of the selected features
-            facilitylayer = uf.getLegendLayerByName(self.iface,facilityName)
+            facilitylayer = uf.getLegendLayerByName(self.iface, facilityName)
             self.selected_sources = self.getAllFeatures(facilitylayer)
-            self.event_source=eventFeature
+            self.event_source = eventFeature
             source_points = [feature.geometry().centroid().asPoint() for feature in self.event_source]
             source_points.extend([feature.geometry().centroid().asPoint() for feature in self.selected_sources])
             # build the graph including these points
@@ -320,17 +346,19 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                     text = "network is built for %s points" % len(self.tied_points)
                     #self.insertReport(text)
 
-    def shortestRoute(self,tied_points):
+        return
+
+    def shortestRoute(self, tied_points):
         options = len(tied_points)
         if options > 1:
             # origin and destination are given as an index in the tied_points list
             origin = 0
-            temp_lengh=99999
+            temp_lengh = 99999
             shortest_route = QgsFeature()
-            for destination in range(1,options):
+            for destination in range(1, options):
                 # calculate the shortest path for the given origin and destination
                 path = uf.calculateRouteDijkstra(self.graph, self.tied_points, origin, destination)
-                #Get length of the geometry QgsGeometry.fromPolyline(path).length()
+                # Get length of the geometry QgsGeometry.fromPolyline(path).length()
                 # store the route results in temporary layer called "Routes"
                 routes_layer = uf.getLegendLayerByName(self.iface, "Routes")
                 # create one if it doesn't exist
@@ -338,7 +366,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                     attribs = ['length']
                     types = [QtCore.QVariant.Double]
                     routes_layer = uf.createTempLayer('Routes', 'LINESTRING', self.network_layer.crs().postgisSrid(),
-                                                  attribs, types)
+                                                      attribs, types)
                     uf.loadTempLayer(routes_layer)
 
                 # insert route line
@@ -350,14 +378,14 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                         fet.setGeometry(QgsGeometry.fromPoint(geom))
                     elif geometry_type == 2:
                         fet.setGeometry(QgsGeometry.fromPolyline(geom))
-                # in the case of polygons, instead of coordinates we insert the geometry
+                        # in the case of polygons, instead of coordinates we insert the geometry
                     elif geometry_type == 3:
                         fet.setGeometry(geom)
                     route_length = fet.geometry().length()
-                    if route_length<temp_lengh:
-                        temp_lengh=route_length
+                    if route_length < temp_lengh:
+                        temp_lengh = route_length
                         shortest_route = fet
-                        facility_name= self.selected_sources[destination-1].attribute('name')
+                        facility_name = self.selected_sources[destination - 1].attribute('name')
             shortest_route.setAttributes([route_length])
             provider.addFeatures([shortest_route])
             provider.updateExtents()
@@ -442,7 +470,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.firestation_name=''
 
     def clearAssignment(self):
-        features=self.eventlayer.selectedFeatures()
+        features = self.eventlayer.selectedFeatures()
         self.eventlayer.startEditing()
         for feature in features:
             feature.setAttribute('unitOnSite',QtCore.QPyNullVariant)
@@ -503,6 +531,110 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         #     attribute = 'NULL'
         self.valueWidget.addItems(attribute)
 
+    # example_chart
+    def plotChart(self):
+        plot_layer = uf.getLegendLayerByName(self.iface, 'wind')  # in my case it is fixed to the wind layer
+        if plot_layer:
+            starttime = uf.getAllFeatureValues(plot_layer, 'starttime')
+            starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
+            direction = uf.getAllFeatureValues(plot_layer, 'direction')
+            speed = uf.getAllFeatureValues(plot_layer, 'speed')
+
+            # ======================
+            # From: https://github.com/phobson/python-metar/blob/master/metar/graphics.py
+            # prepare and create the wind direction plot
+            #     '''
+            #     Plots a Wind Rose. Feed it a dataframe with 'speed'(kmh) and
+            #     'direction' degrees clockwise from north (columns)
+            #     '''
+            d = {'starttime': starttime, 'direction': uf.getAllFeatureValues(plot_layer, 'direction'),
+                 'speed': uf.getAllFeatureValues(plot_layer, 'speed')
+                 }
+            dataframe = pd.DataFrame(d)
+            speedcol='speed'
+            dircol='direction'
+
+            def _get_wind_counts(dataframe, maxSpeed, speedcol, dircol, factor=1):
+                group = dataframe[dataframe[speedcol]*factor < maxSpeed].groupby(by=dircol)
+                counts = group.size()
+                return counts[counts.index != 0]
+
+            def _convert_dir_to_left_radian(directions):
+                N = directions.shape[0]
+                barDir = directions * np.pi/180. - np.pi/N
+                barWidth = [2 * np.pi / N]*N
+                return barDir, barWidth
+
+            def _pct_fmt(x, pos=0):
+                return '%0.1f%%' % (100*x)
+
+            # set up the axis
+            self.chart_subplot_radar.xaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
+            self.chart_subplot_radar.yaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
+            self.chart_subplot_radar.set_theta_zero_location("N")
+            self.chart_subplot_radar.set_theta_direction('clockwise')
+
+            # speed bins and colors
+            speedBins = [60, 50]
+            colors = ['#579443', '#0066FF']#, '#990000', '#FF4719', '#FFCC00', '#579443', '#0066FF']
+
+            # number of total and zero-wind observations
+            total = np.float(dataframe.shape[0])
+            factor = 1
+            units = 'kmh'
+
+            calm = np.float(dataframe[dataframe[speedcol] == 0].shape[0])/total * 100
+
+            # loop through the speed bins
+            for spd, clr in zip(speedBins, colors):
+                barLen = _get_wind_counts(dataframe, spd, speedcol, dircol, factor=factor)
+                barLen = barLen/total
+                barDir, barWidth = _convert_dir_to_left_radian(np.array(barLen.index))
+                self.chart_subplot_radar.bar(barDir, barLen, width=barWidth, linewidth=0.50,
+                        edgecolor=(0.25, 0.25, 0.25), color=clr, alpha=0.8,
+                        label=r"<%d %s" % (spd, units))
+
+            # format the plot's axes
+            self.chart_subplot_radar.legend(loc='lower right', bbox_to_anchor=(1.10, -0.13), fontsize=8)
+            self.chart_subplot_radar.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
+            self.chart_subplot_radar.xaxis.grid(True, which='major', color='k', alpha=0.5)
+            self.chart_subplot_radar.yaxis.grid(True, which='major', color='k', alpha=0.5)
+            self.chart_subplot_radar.yaxis.set_major_formatter(FuncFormatter(_pct_fmt))
+            #self.chart_subplot_radar.text(0.05, 0.95, 'Calm Winds: %0.1f%%' % calm)
+            #if calm >= 0.1:
+            #   self.chart_subplot_radar.set_ylim(ymin=np.floor(calm*10)/10.)
+
+            # ======================
+            # draw windspeed bar plot
+            # x = time, y = wind speed
+            self.chart_subplot_bar.cla()
+            self.chart_subplot_bar.bar(starttime, speed, width=0.03)
+            self.chart_subplot_bar.set_ylim(bottom=0, top=150)
+            self.chart_subplot_bar.hlines(120, xmin=min(starttime), xmax=max(starttime), colors='r', \
+                                          label='Withdraw all units')
+            self.chart_subplot_bar.legend()
+
+            hours = dates.HourLocator()
+            hFmt = dates.DateFormatter('%H:%M')
+
+            # labels = starttime.hour()
+
+            self.chart_subplot_bar.xaxis.set_major_locator(hours)
+            self.chart_subplot_bar.xaxis.set_major_formatter(hFmt)
+            # self.chart_subplot_bar.autofmt_xdate()
+
+            # self.chart_subplot_bar.set_xticks(ticks)
+            # self.chart_subplot_bar.set_xticklabels(rotation = 70)
+
+        # draw all the plots
+        self.chart_canvas.draw()
+
+    # example_chart
+    def clearChart(self):
+        self.chart_subplot_radar.cla()
+        self.chart_subplot_bar.cla()
+        self.chart_canvas.draw()
+
     #######
     #    Reporting functions
     #######
@@ -537,28 +669,28 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.clearTable()
         self.updateTable(summary)
 
-    # # report window functions
-    # def updateReport(self, report):
-    #     self.reportList.clear()
-    #     self.reportList.addItems(report)
-    #
-    # def insertReport(self, item):
-    #     self.reportList.insertItem(0, item)
-    #
-    # def clearReport(self):
-    #     self.reportList.clear()
+        # # report window functions
+        # def updateReport(self, report):
+        #     self.reportList.clear()
+        #     self.reportList.addItems(report)
+        #
+        # def insertReport(self, item):
+        #     self.reportList.insertItem(0, item)
+        #
+        # def clearReport(self):
+        #     self.reportList.clear()
 
-    # # table window functions
-    # def updateTable(self, values):
-    #     # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
-    #     self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
-    #     self.statisticsTable.setRowCount(len(values))
-    #     for i, item in enumerate(values):
-    #         self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
-    #         self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
-    #     self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
-    #     self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
-    #     self.statisticsTable.resizeRowsToContents()
-    #
-    # def clearTable(self):
-    #     self.statisticsTable.clear()
+        # # table window functions
+        # def updateTable(self, values):
+        #     # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
+        #     self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
+        #     self.statisticsTable.setRowCount(len(values))
+        #     for i, item in enumerate(values):
+        #         self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
+        #         self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
+        #     self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+        #     self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
+        #     self.statisticsTable.resizeRowsToContents()
+        #
+        # def clearTable(self):
+        #     self.statisticsTable.clear()
