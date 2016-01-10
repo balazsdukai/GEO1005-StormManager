@@ -37,7 +37,7 @@ from matplotlib.figure import Figure
 from matplotlib import dates
 import datetime as dt
 import numpy as np
-import pandas as pd
+# import pandas as pd
 from matplotlib.ticker import FuncFormatter
 from matplotlib import pyplot as plt
 
@@ -540,69 +540,69 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             direction = uf.getAllFeatureValues(plot_layer, 'direction')
             speed = uf.getAllFeatureValues(plot_layer, 'speed')
 
-            # ======================
-            # From: https://github.com/phobson/python-metar/blob/master/metar/graphics.py
-            # prepare and create the wind direction plot
-            #     '''
-            #     Plots a Wind Rose. Feed it a dataframe with 'speed'(kmh) and
-            #     'direction' degrees clockwise from north (columns)
-            #     '''
-            d = {'starttime': starttime, 'direction': uf.getAllFeatureValues(plot_layer, 'direction'),
-                 'speed': uf.getAllFeatureValues(plot_layer, 'speed')
-                 }
-            dataframe = pd.DataFrame(d)
-            speedcol='speed'
-            dircol='direction'
-
-            def _get_wind_counts(dataframe, maxSpeed, speedcol, dircol, factor=1):
-                group = dataframe[dataframe[speedcol]*factor < maxSpeed].groupby(by=dircol)
-                counts = group.size()
-                return counts[counts.index != 0]
-
-            def _convert_dir_to_left_radian(directions):
-                N = directions.shape[0]
-                barDir = directions * np.pi/180. - np.pi/N
-                barWidth = [2 * np.pi / N]*N
-                return barDir, barWidth
-
-            def _pct_fmt(x, pos=0):
-                return '%0.1f%%' % (100*x)
-
-            # set up the axis
-            self.chart_subplot_radar.xaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
-            self.chart_subplot_radar.yaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
-            self.chart_subplot_radar.set_theta_zero_location("N")
-            self.chart_subplot_radar.set_theta_direction('clockwise')
-
-            # speed bins and colors
-            speedBins = [60, 50]
-            colors = ['#579443', '#0066FF']#, '#990000', '#FF4719', '#FFCC00', '#579443', '#0066FF']
-
-            # number of total and zero-wind observations
-            total = np.float(dataframe.shape[0])
-            factor = 1
-            units = 'kmh'
-
-            calm = np.float(dataframe[dataframe[speedcol] == 0].shape[0])/total * 100
-
-            # loop through the speed bins
-            for spd, clr in zip(speedBins, colors):
-                barLen = _get_wind_counts(dataframe, spd, speedcol, dircol, factor=factor)
-                barLen = barLen/total
-                barDir, barWidth = _convert_dir_to_left_radian(np.array(barLen.index))
-                self.chart_subplot_radar.bar(barDir, barLen, width=barWidth, linewidth=0.50,
-                        edgecolor=(0.25, 0.25, 0.25), color=clr, alpha=0.8,
-                        label=r"<%d %s" % (spd, units))
-
-            # format the plot's axes
-            self.chart_subplot_radar.legend(loc='lower right', bbox_to_anchor=(1.10, -0.13), fontsize=8)
-            self.chart_subplot_radar.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
-            self.chart_subplot_radar.xaxis.grid(True, which='major', color='k', alpha=0.5)
-            self.chart_subplot_radar.yaxis.grid(True, which='major', color='k', alpha=0.5)
-            self.chart_subplot_radar.yaxis.set_major_formatter(FuncFormatter(_pct_fmt))
-            #self.chart_subplot_radar.text(0.05, 0.95, 'Calm Winds: %0.1f%%' % calm)
-            #if calm >= 0.1:
-            #   self.chart_subplot_radar.set_ylim(ymin=np.floor(calm*10)/10.)
+            # # ======================
+            # # From: https://github.com/phobson/python-metar/blob/master/metar/graphics.py
+            # # prepare and create the wind direction plot
+            # #     '''
+            # #     Plots a Wind Rose. Feed it a dataframe with 'speed'(kmh) and
+            # #     'direction' degrees clockwise from north (columns)
+            # #     '''
+            # d = {'starttime': starttime, 'direction': uf.getAllFeatureValues(plot_layer, 'direction'),
+            #      'speed': uf.getAllFeatureValues(plot_layer, 'speed')
+            #      }
+            # dataframe = pd.DataFrame(d)
+            # speedcol='speed'
+            # dircol='direction'
+            #
+            # def _get_wind_counts(dataframe, maxSpeed, speedcol, dircol, factor=1):
+            #     group = dataframe[dataframe[speedcol]*factor < maxSpeed].groupby(by=dircol)
+            #     counts = group.size()
+            #     return counts[counts.index != 0]
+            #
+            # def _convert_dir_to_left_radian(directions):
+            #     N = directions.shape[0]
+            #     barDir = directions * np.pi/180. - np.pi/N
+            #     barWidth = [2 * np.pi / N]*N
+            #     return barDir, barWidth
+            #
+            # def _pct_fmt(x, pos=0):
+            #     return '%0.1f%%' % (100*x)
+            #
+            # # set up the axis
+            # self.chart_subplot_radar.xaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
+            # self.chart_subplot_radar.yaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
+            # self.chart_subplot_radar.set_theta_zero_location("N")
+            # self.chart_subplot_radar.set_theta_direction('clockwise')
+            #
+            # # speed bins and colors
+            # speedBins = [60, 50]
+            # colors = ['#579443', '#0066FF']#, '#990000', '#FF4719', '#FFCC00', '#579443', '#0066FF']
+            #
+            # # number of total and zero-wind observations
+            # total = np.float(dataframe.shape[0])
+            # factor = 1
+            # units = 'kmh'
+            #
+            # calm = np.float(dataframe[dataframe[speedcol] == 0].shape[0])/total * 100
+            #
+            # # loop through the speed bins
+            # for spd, clr in zip(speedBins, colors):
+            #     barLen = _get_wind_counts(dataframe, spd, speedcol, dircol, factor=factor)
+            #     barLen = barLen/total
+            #     barDir, barWidth = _convert_dir_to_left_radian(np.array(barLen.index))
+            #     self.chart_subplot_radar.bar(barDir, barLen, width=barWidth, linewidth=0.50,
+            #             edgecolor=(0.25, 0.25, 0.25), color=clr, alpha=0.8,
+            #             label=r"<%d %s" % (spd, units))
+            #
+            # # format the plot's axes
+            # self.chart_subplot_radar.legend(loc='lower right', bbox_to_anchor=(1.10, -0.13), fontsize=8)
+            # self.chart_subplot_radar.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
+            # self.chart_subplot_radar.xaxis.grid(True, which='major', color='k', alpha=0.5)
+            # self.chart_subplot_radar.yaxis.grid(True, which='major', color='k', alpha=0.5)
+            # self.chart_subplot_radar.yaxis.set_major_formatter(FuncFormatter(_pct_fmt))
+            # #self.chart_subplot_radar.text(0.05, 0.95, 'Calm Winds: %0.1f%%' % calm)
+            # #if calm >= 0.1:
+            # #   self.chart_subplot_radar.set_ylim(ymin=np.floor(calm*10)/10.)
 
             # ======================
             # draw windspeed bar plot
