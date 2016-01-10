@@ -608,23 +608,15 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             # draw windspeed bar plot
             # x = time, y = wind speed
             self.chart_subplot_bar.cla()
-            self.chart_subplot_bar.bar(starttime, speed, width=0.03)
+            self.chart_subplot_bar.bar(starttime, speed, width=0.03, align='center')
             self.chart_subplot_bar.set_ylim(bottom=0, top=150)
             self.chart_subplot_bar.hlines(120, xmin=min(starttime), xmax=max(starttime), colors='r', \
                                           label='Withdraw all units')
             self.chart_subplot_bar.legend()
-
-            hours = dates.HourLocator()
-            hFmt = dates.DateFormatter('%H:%M')
-
-            # labels = starttime.hour()
-
-            self.chart_subplot_bar.xaxis.set_major_locator(hours)
-            self.chart_subplot_bar.xaxis.set_major_formatter(hFmt)
-            # self.chart_subplot_bar.autofmt_xdate()
-
-            # self.chart_subplot_bar.set_xticks(ticks)
-            # self.chart_subplot_bar.set_xticklabels(rotation = 70)
+            # set x-axis labels 
+            labels = [time.strftime('%H:%M') for time in starttime]
+            self.chart_subplot_bar.set_xticks(starttime)
+            self.chart_subplot_bar.set_xticklabels(labels, rotation = 'vertical')
 
         # draw all the plots
         self.chart_canvas.draw()
