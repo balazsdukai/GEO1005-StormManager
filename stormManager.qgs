@@ -1,7 +1,7 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
 <qgis projectname="" version="2.8.1-Wien">
   <title></title>
-  <layer-tree-group expanded="1" checked="Qt::PartiallyChecked" name="">
+  <layer-tree-group expanded="1" checked="Qt::Checked" name="">
     <customproperties/>
     <layer-tree-layer expanded="1" checked="Qt::Checked" id="wind20160109174854562" name="wind">
       <customproperties/>
@@ -9,10 +9,10 @@
     <layer-tree-layer expanded="1" checked="Qt::Checked" id="Routes20160108110243165" name="Routes">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" checked="Qt::Checked" id="hospital20160108180205576" name="hospital">
+    <layer-tree-layer expanded="0" checked="Qt::Checked" id="hospital20160108180205576" name="hospital">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" checked="Qt::Checked" id="firestation20160108180149697" name="firestation">
+    <layer-tree-layer expanded="0" checked="Qt::Checked" id="firestation20160108180149697" name="firestation">
       <customproperties/>
     </layer-tree-layer>
     <layer-tree-layer expanded="0" checked="Qt::Checked" id="reports20151217220015751" name="reports">
@@ -26,9 +26,6 @@
           <value>{13505af6-e6c0-4dfb-af71-b67df3b73615}</value>
         </property>
       </customproperties>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="1" checked="Qt::Unchecked" id="OpenLayers_plugin_layer20151202203758781" name="OpenStreetMap">
-      <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
   <relations/>
@@ -74,7 +71,6 @@
       <item>Routes20160108110243165</item>
       <item>reports20151217220015751</item>
       <item>roads20151218000234132</item>
-      <item>OpenLayers_plugin_layer20151202203758781</item>
       <item>firestation20160108180149697</item>
       <item>hospital20160108180205576</item>
       <item>wind20160109174854562</item>
@@ -91,13 +87,13 @@
         <legendlayerfile isInOverview="0" layerid="Routes20160108110243165" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="hospital" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
+    <legendlayer drawingOrder="-1" open="false" checked="Qt::Checked" name="hospital" showFeatureCount="0">
+      <filegroup open="false" hidden="false">
         <legendlayerfile isInOverview="0" layerid="hospital20160108180205576" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="firestation" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
+    <legendlayer drawingOrder="-1" open="false" checked="Qt::Checked" name="firestation" showFeatureCount="0">
+      <filegroup open="false" hidden="false">
         <legendlayerfile isInOverview="0" layerid="firestation20160108180149697" visible="1"/>
       </filegroup>
     </legendlayer>
@@ -111,38 +107,8 @@
         <legendlayerfile isInOverview="0" layerid="roads20151218000234132" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="OpenStreetMap" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="OpenLayers_plugin_layer20151202203758781" visible="0"/>
-      </filegroup>
-    </legendlayer>
   </legend>
-  <projectlayers layercount="7">
-    <maplayer minimumScale="0" maximumScale="1e+08" type="plugin" hasScaleBasedVisibilityFlag="0" name="openlayers">
-      <id>OpenLayers_plugin_layer20151202203758781</id>
-      <datasource>.</datasource>
-      <title></title>
-      <abstract></abstract>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>OpenStreetMap</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs</proj4>
-          <srsid>3857</srsid>
-          <srid>3857</srid>
-          <authid>EPSG:3857</authid>
-          <description>WGS 84 / Pseudo Mercator</description>
-          <projectionacronym>merc</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>false</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <customproperties>
-        <property key="ol_layer_type" value="OpenStreetMap"/>
-      </customproperties>
-    </maplayer>
+  <projectlayers layercount="6">
     <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>Routes20160108110243165</id>
       <datasource>LINESTRING?crs=EPSG:4326</datasource>
@@ -273,8 +239,8 @@
         </edittype>
       </edittypes>
       <renderer-v2 symbollevels="0" type="RuleRenderer">
-        <rules key="{b072fa85-514e-4011-bb1e-78c029a8b37c}">
-          <rule key="{41c0d78a-0a99-4fea-9c38-11cbca5c8d97}" symbol="0" label="firestation"/>
+        <rules key="{f80f5ee1-faac-4082-a7d2-63a595b45c02}">
+          <rule key="{62533c45-fcb4-4353-ab26-81a703993daf}" symbol="0" label="firestation"/>
         </rules>
         <symbols>
           <symbol alpha="1" type="marker" name="0">
@@ -385,8 +351,8 @@
         </edittype>
       </edittypes>
       <renderer-v2 symbollevels="0" type="RuleRenderer">
-        <rules key="{46729540-23c7-4641-92db-e04eb747225a}">
-          <rule key="{11618986-ee72-4d96-b542-4dca2ba3d4d7}" symbol="0" label="hospital"/>
+        <rules key="{3e97171a-0ed7-49db-9118-e1a771674a05}">
+          <rule key="{7585fc1c-672b-491b-8866-805147244826}" symbol="0" label="hospital"/>
         </rules>
         <symbols>
           <symbol alpha="1" type="marker" name="0">
@@ -651,19 +617,19 @@
         </edittype>
       </edittypes>
       <renderer-v2 symbollevels="0" type="RuleRenderer">
-        <rules key="{3a4440cf-09e7-4c43-bcd4-e85ae27f5fed}">
-          <rule filter="&quot;dmgType&quot; LIKE fire AND &quot;resolved&quot; LIKE no AND &quot;civilDmg&quot;> 0" key="{4f24be46-0064-482f-9ed0-c73977d0556a}" symbol="0" label="fire_active_humanDmg"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;> 0 " key="{a7f9cfbe-5b7d-4847-9a10-f9add3946684}" symbol="1" label="building_active_humanDmg"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;> 0 " key="{07dc7b29-a393-410d-9270-41cadeb002fd}" symbol="2" label="tree_active_humanDmg"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'fire' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;= 0" key="{8e1fe1d4-2b87-479a-9aaf-fa0aa4e8b5a0}" symbol="3" label="fire_active"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;= 0 " key="{c8517e9d-8e73-42e9-b5e6-7354c4f78ae9}" symbol="4" label="building_active"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;= 0" key="{9012095c-d0fe-40f7-b5a4-1e044a5b3ffa}" symbol="5" label="tree_active"/>
-          <rule filter="&quot;dmgType&quot; LIKE fire AND &quot;resolved&quot; LIKE yes AND &quot;civilDmg&quot;> 0" key="{4313f16e-686f-4ae1-8330-4697b80937c8}" symbol="6" label="fire_resolved_humanDmg"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;> 0 " key="{a0fe6f2e-8412-4892-a5cd-4bc3d1c1f4ea}" symbol="7" label="building_resolved_humanDmg"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;> 0 " key="{867fd826-a631-4f73-8891-20592c870b65}" symbol="8" label="tree_resolved_humanDmg"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'fire' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;= 0" key="{a4d3210d-501c-4768-b227-4cc9f0179979}" symbol="9" label="fire_resolved"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;= 0 " key="{8f714790-4ceb-4085-9ba1-daa8ab812fbb}" symbol="10" label="building_resolved"/>
-          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;= 0" key="{9e7e0f1c-a6c0-4cff-a3a4-1994f11633d4}" symbol="11" label="tree_resolved"/>
+        <rules key="{035155c1-afff-4877-a45e-3688fa14a8c4}">
+          <rule filter="&quot;dmgType&quot; LIKE fire AND &quot;resolved&quot; is\ &quot;no&quot; AND &quot;civilDmg&quot;> 0" key="{0322cde5-65b8-41ea-812f-df3041b128c1}" symbol="0" label="fire_active_humanDmg"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;> 0 " key="{c546c571-2f1d-44a4-8eed-705a10896afd}" symbol="1" label="building_active_humanDmg"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;> 0 " key="{c9e78fdf-3fb9-4443-ac1e-26cf98d9727d}" symbol="2" label="tree_active_humanDmg"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'fire' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;= 0" key="{718e2f46-a6df-4711-a82c-d7f0188fffab}" symbol="3" label="fire_active"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;= 0 " key="{7c0b57c4-fb7d-4b05-a90a-52dbe9ce0000}" symbol="4" label="building_active"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'no' AND &quot;civilDmg&quot;= 0" key="{d00fa680-4669-4ce1-a780-040f74411d19}" symbol="5" label="tree_active"/>
+          <rule filter="&quot;dmgType&quot; LIKE fire AND &quot;resolved&quot; LIKE yes AND &quot;civilDmg&quot;> 0" key="{ad6236e1-6272-4daa-b5e1-948f453bdcc5}" symbol="6" label="fire_resolved_humanDmg"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;> 0 " key="{8d47c8a3-7d18-4cbb-9e54-7835a00f7aa1}" symbol="7" label="building_resolved_humanDmg"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;> 0 " key="{b6882d9c-3c42-4d00-8dac-67cb11fc1699}" symbol="8" label="tree_resolved_humanDmg"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'fire' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;= 0" key="{e4e0723b-b4ea-4f50-8e03-62639c8f307f}" symbol="9" label="fire_resolved"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'building' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;= 0 " key="{1f8a13be-cb32-4b88-bba1-9ed8b9464ae8}" symbol="10" label="building_resolved"/>
+          <rule filter="&quot;dmgType&quot; LIKE 'tree' AND &quot;resolved&quot; LIKE 'yes' AND &quot;civilDmg&quot;= 0" key="{0e438aad-1924-466b-8dc0-2c3419aa22f6}" symbol="11" label="tree_resolved"/>
         </rules>
         <symbols>
           <symbol alpha="1" type="marker" name="0">
@@ -1960,10 +1926,10 @@
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <editform></editform>
+      <editform>.</editform>
       <editforminit/>
       <featformsuppress>0</featformsuppress>
-      <annotationform></annotationform>
+      <annotationform>.</annotationform>
       <editorlayout>generatedlayout</editorlayout>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
@@ -2017,10 +1983,14 @@
       <DefaultSnapToleranceUnit type="int">2</DefaultSnapToleranceUnit>
       <LayerSnappingList type="QStringList">
         <value>Routes20160108110243165</value>
+        <value>firestation20160108180149697</value>
+        <value>hospital20160108180205576</value>
         <value>reports20151217220015751</value>
         <value>roads20151218000234132</value>
       </LayerSnappingList>
       <LayerSnappingEnabledList type="QStringList">
+        <value>disabled</value>
+        <value>disabled</value>
         <value>disabled</value>
         <value>disabled</value>
         <value>disabled</value>
@@ -2031,8 +2001,12 @@
         <value>2</value>
         <value>2</value>
         <value>2</value>
+        <value>2</value>
+        <value>2</value>
       </LayerSnappingToleranceUnitList>
       <LayerSnapToList type="QStringList">
+        <value>to_vertex_and_segment</value>
+        <value>to_vertex_and_segment</value>
         <value>to_vertex_and_segment</value>
         <value>to_vertex_and_segment</value>
         <value>to_vertex_and_segment</value>
@@ -2040,6 +2014,8 @@
       <DefaultSnapType type="QString">off</DefaultSnapType>
       <DefaultSnapTolerance type="double">0</DefaultSnapTolerance>
       <LayerSnappingToleranceList type="QStringList">
+        <value>0.000000</value>
+        <value>0.000000</value>
         <value>0.000000</value>
         <value>0.000000</value>
         <value>0.000000</value>
