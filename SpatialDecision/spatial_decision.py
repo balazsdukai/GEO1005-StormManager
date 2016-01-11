@@ -81,10 +81,10 @@ class SpatialDecision:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&SDSS Template')
+        self.menu = self.tr(u'&StormManager')
         # TODO: We are going to let the user set this up in a future iteration
-        self.toolbar = self.iface.addToolBar(u'SpatialDecision')
-        self.toolbar.setObjectName(u'SpatialDecision')
+        self.toolbar = self.iface.addToolBar(u'StormManager')
+        self.toolbar.setObjectName(u'StormManager')
 
         #print "** INITIALIZING SpatialDecision"
 
@@ -108,7 +108,7 @@ class SpatialDecision:
         :rtype: QString
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('SpatialDecision', message)
+        return QCoreApplication.translate('StormManager', message)
 
 
     def add_action(
@@ -191,7 +191,7 @@ class SpatialDecision:
         icon_path = ':/plugins/SpatialDecision/icons/sdss_icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'SDSS Template'),
+            text=self.tr(u'StormManager'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
@@ -221,7 +221,7 @@ class SpatialDecision:
 
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&SDSS Template'),
+                self.tr(u'&StormManager'),
                 action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar

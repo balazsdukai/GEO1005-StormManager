@@ -7,17 +7,17 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=SDSS Template
+name=StormManager
 qgisMinimumVersion=2.0
-description=This is a SDSS template for the GEO1005 course
+description=This is the StromManager plugin for the GEO1005 course
 version=0.1
-author=Jorge Gil, TU Delft
-email=j.a.lopesgil@tudelft.nl
+author=Balázs Dukai, Yuxuan Kang, Jorge Gil, TU Delft
+email=b.dukai@student.tudelft.nl, y.kang-1@student.tudelft.nl, j.a.lopesgil@tudelft.nl
 
-about=This plugin is a template Spatial Decision Support System, to be developed as a project for the GEO1005 course. It provides example of basic functionality to deal with data, spatial analysis and data visualisation.
+about=This plugin was developed for the GEO1005 course. It provides a simple common operational picture for command and control officers in a storm event.
 
-tracker=https://github.com/jorgegil/GEO1005/issues
-repository=https://github.com/jorgegil/GEO1005
+tracker=https://github.com/balazsdukai/GEO1005-StormManager/issues
+repository=https://github.com/balazsdukai/GEO1005-StormManager
 # End of mandatory metadata
 
 # Recommended items:
@@ -28,7 +28,7 @@ repository=https://github.com/jorgegil/GEO1005
 # Tags are comma separated with spaces allowed
 tags=
 
-homepage=https://github.com/jorgegil/GEO1005
+homepage=https://github.com/balazsdukai/GEO1005-StormManager
 category=Plugins
 icon=sdss_icon.png
 # experimental flag
