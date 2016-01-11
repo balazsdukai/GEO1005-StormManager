@@ -1,4 +1,7 @@
 .DS_Store
 .idea
 .workspace.xml
+/external
 *.pyc
+sample_data.zip
+StormManager.zip
