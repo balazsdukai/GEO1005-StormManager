@@ -1,11 +1,13 @@
 # GEO1005
 Material for the MSc Geomatics GEO1005 course project
 
-data/ – Contains raw datasets. MUST NOT EDIT!
-document/ – Documentation of the project
-sample_data/ – from Jorge
-SpatialDecision/ – sample plugin from Jorge
-support/ – python scripts for Pycharm
-work/ – Datasets derived from the raw data
+document/ – Notes
 
-stromManager.qgs – the QGIS project file for the plugin
+sample_data/ – datasets used by the plugin, includes stromManager.qgs – the QGIS project file for the plugin
+
+SpatialDecision/ – sample plugin from Jorge
+
+support/ – python scripts for Pycharm
+
+release_MacOSX/ — latest release for MacOSX
+
