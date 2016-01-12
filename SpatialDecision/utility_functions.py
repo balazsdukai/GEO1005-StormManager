@@ -98,7 +98,7 @@ def isLayerProjected(layer):
 def getLegendLayerByName(iface, name):
     layer = None
     for i in iface.legendInterface().layers():
-        if i.name() == name:
+        if i.name().lower() == name:
             layer = i
     return layer
 

@@ -34,7 +34,6 @@ from . import utility_functions as uf
 # example_chart
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from matplotlib import dates
 import datetime as dt
 import numpy as np
 
@@ -50,7 +49,6 @@ except ImportError, e:
 
 from matplotlib.ticker import FuncFormatter
 import math
-from matplotlib import pyplot as plt
 from matplotlib import colors
 import matplotlib.cm as cm
 
@@ -82,8 +80,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # data
         self.iface.projectRead.connect(self.updateLayers)
         self.iface.newProjectCreated.connect(self.updateLayers)
-        self.openScenarioButton.hide()
-        self.saveScenarioButton.hide()
+        # self.openScenarioButton.hide()
+        # self.saveScenarioButton.hide()
         # self.openScenarioButton.clicked.connect(self.openScenario)
         # self.saveScenarioButton.clicked.connect(self.saveScenario)
         self.selectLayerCombo.activated.connect(self.setSelectedLayer)
@@ -105,17 +103,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # visualisation
 
-        # reporting
-        # self.featureCounterUpdateButton.hide()
-        # self.saveMapButton.hide()
-        # self.saveMapPathButton.hide()
-        # self.featureCounterUpdateButton.clicked.connect(self.updateNumberFeatures)
-        # self.saveMapButton.clicked.connect(self.saveMap)
-        # self.saveMapPathButton.clicked.connect(self.selectFile)
-        # self.updateAttribute.connect(self.extractAttributeSummary)
-
-        # set current UI restrictions
-
         # example_chart
         # add matplotlib Figure to chartFrame
         self.chart_figure = Figure()
@@ -127,7 +114,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.chart_canvas = FigureCanvas(self.chart_figure)
         self.chartLayout.addWidget(self.chart_canvas)
 
-        # initialisation
+         # initialisation
         self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
         self.hospitalLayer = uf.getLegendLayerByName(self.iface, 'hospital')
         self.firestationLayer = uf.getLegendLayerByName(self.iface, 'firestation')
@@ -138,35 +125,35 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # run simple tests
 
-    def closeEvent(self, event):
-        # disconnect interface signals
-        self.iface.projectRead.disconnect(self.updateLayers)
-        self.iface.newProjectCreated.disconnect(self.updateLayers)
-
-        self.closingPlugin.emit()
-        event.accept()
+    # def closeEvent(self, event):
+    #     # disconnect interface signals
+    #     self.iface.projectRead.disconnect(self.updateLayers)
+    #     self.iface.newProjectCreated.disconnect(self.updateLayers)
+    #
+    #     self.closingPlugin.emit()
+    #     event.accept()
 
     #######
     #   Data functions
     #######
-    def openScenario(self, filename=""):
-        scenario_open = False
-        scenario_file = os.path.join('/Users/jorge/github/GEO1005', 'sample_data', 'time_test.qgs')
-        # check if file exists
-        if os.path.isfile(scenario_file):
-            self.iface.addProject(scenario_file)
-            scenario_open = True
-        else:
-            last_dir = uf.getLastDir("SDSS")
-            new_file = QtGui.QFileDialog.getOpenFileName(self, "", last_dir, "(*.qgs)")
-            if new_file:
-                self.iface.addProject(new_file)
-                scenario_open = True
-        if scenario_open:
-            self.updateLayers()
+    # def openScenario(self, filename=""):
+    #     scenario_open = False
+    #     scenario_file = os.path.join('/Users/jorge/github/GEO1005', 'sample_data', 'time_test.qgs')
+    #     # check if file exists
+    #     if os.path.isfile(scenario_file):
+    #         self.iface.addProject(scenario_file)
+    #         scenario_open = True
+    #     else:
+    #         last_dir = uf.getLastDir("SDSS")
+    #         new_file = QtGui.QFileDialog.getOpenFileName(self, "", last_dir, "(*.qgs)")
+    #         if new_file:
+    #             self.iface.addProject(new_file)
+    #             scenario_open = True
+    #     if scenario_open:
+    #         self.updateLayers()
 
-    def saveScenario(self):
-        self.iface.actionSaveProject()
+    # def saveScenario(self):
+    #     self.iface.actionSaveProject()
 
     def updateLayers(self):
         layers = uf.getLegendLayers(self.iface, 'all', 'all')
@@ -175,9 +162,10 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             layer_names = uf.getLayersListNames(layers)
             self.selectLayerCombo.addItems(layer_names)
             self.setSelectedLayer()
-            self.plotChart()
+            #self.plotChart()
+            print 'I would plot the chart now'
         else:
-            self.clearChart()  # example_chart
+            print 'no layers to update'
 
     def setSelectedLayer(self):
         layer_name = self.selectLayerCombo.currentText()
@@ -193,7 +181,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.selectAttributeCombo.clear()
         if layer:
             fields = uf.getFieldNames(layer)
-            self.clearChart()
+            #self.clearChart()
             self.selectAttributeCombo.addItems(fields)
             # send list to the report list window
             # self.clearReport()
@@ -678,63 +666,3 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
         date = starttime[0].strftime('%Y-%m-%d')
         return date
-
-    #######
-    #    Reporting functions
-    #######
-    # update a text edit field
-    def updateNumberFeatures(self):
-        layer = self.getSelectedLayer()
-        if layer:
-            count = layer.featureCount()
-            self.featureCounterEdit.setText(str(count))
-
-    # selecting a file for saving
-    def selectFile(self):
-        last_dir = uf.getLastDir("SDSS")
-        path = QtGui.QFileDialog.getSaveFileName(self, "Save map file", last_dir, "PNG (*.png)")
-        if path.strip() != "":
-            path = unicode(path)
-            uf.setLastDir(path, "SDSS")
-            self.saveMapPathEdit.setText(path)
-
-    # saving the current screen
-    def saveMap(self):
-        filename = self.saveMapPathEdit.text()
-        if filename != '':
-            self.canvas.saveAsImage(filename, None, "PNG")
-
-    def extractAttributeSummary(self, attribute):
-        # get summary of the attribute
-        summary = []
-        layer = self.getSelectedLayer()
-
-        # send this to the table
-        self.clearTable()
-        self.updateTable(summary)
-
-        # # report window functions
-        # def updateReport(self, report):
-        #     self.reportList.clear()
-        #     self.reportList.addItems(report)
-        #
-        # def insertReport(self, item):
-        #     self.reportList.insertItem(0, item)
-        #
-        # def clearReport(self):
-        #     self.reportList.clear()
-
-        # # table window functions
-        # def updateTable(self, values):
-        #     # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
-        #     self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
-        #     self.statisticsTable.setRowCount(len(values))
-        #     for i, item in enumerate(values):
-        #         self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
-        #         self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
-        #     self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
-        #     self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
-        #     self.statisticsTable.resizeRowsToContents()
-        #
-        # def clearTable(self):
-        #     self.statisticsTable.clear()
