@@ -1,112 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e068776-b2cf-4af4-9ef1-53140d1a627b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/000321 buurtkaart met Cijfers 2009 web.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/brt_2009_gn3.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/brt_2009_gn3.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/brt_2009_gn3.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/brt_2009_gn3.shp.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/brt_2009_gn3.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/gem_2009_gn3.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/gem_2009_gn3.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/gem_2009_gn3.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/gem_2009_gn3.shp.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/gem_2009_gn3.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/wijk_2009_gn3.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/wijk_2009_gn3.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/wijk_2009_gn3.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/wijk_2009_gn3.shp.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/2009-buurtkaart-gn-3/wijk_2009_gn3.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/20151126151306_2080931707.tif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/README.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/aging-polygons.qml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/delft_roads.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/delft_roads.keywords" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/delft_roads.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/delft_roads.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/delft_roads.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/delft_roads.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/delft_roads.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/district1_time.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/obstacles.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/obstacles.keywords" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/obstacles.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/obstacles.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/obstacles.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/obstacles.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/obstacles.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/osm_result.qgs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.keywords" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.license" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.qml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/potential-idp.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/rotterdam_municipality.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/rotterdam_municipality.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/rotterdam_municipality.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/rotterdam_municipality.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/rotterdam_municipality.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/route_test.qgs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_points.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_points.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_points.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_points.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_points.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_polygoin.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_polygoin.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_polygoin.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_polygoin.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/test_polygoin.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/sample_data/time_test.qgs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/stormManager.qgs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation_poly.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation_poly.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation_poly.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation_poly.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/firestation_poly.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital_poly.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital_poly.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital_poly.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital_poly.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/hospital_poly.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/man23.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.keywords" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.qpj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/reports.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.dbf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.keywords" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.license" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.prj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.qml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.shp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.shx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/roads.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/work/wind.csv" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sample_data/roads.dbf" afterPath="$PROJECT_DIR$/sample_data/roads.dbf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sample_data/roads.shp" afterPath="$PROJECT_DIR$/sample_data/roads.shp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sample_data/roads.shx" afterPath="$PROJECT_DIR$/sample_data/roads.shx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpatialDecision/.gitignore" afterPath="$PROJECT_DIR$/SpatialDecision/.gitignore" />
-    </list>
+    <list default="true" id="8e068776-b2cf-4af4-9ef1-53140d1a627b" name="Default" comment="" />
     <ignored path="GEO1005-StormManager.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -138,31 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="spatial_decision_dockwidget.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="spatial_decision_dockwidget.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/SpatialDecision/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.10460251">
-              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pb_tool.cfg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SpatialDecision/pb_tool.cfg">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
+            <state vertical-scroll-proportion="1.4819278">
+              <caret line="661" column="32" selection-start-line="661" selection-start-column="32" selection-end-line="661" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -432,7 +307,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="24" width="1543" height="876" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -747,9 +622,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SpatialDecision/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10460251">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SpatialDecision/pb_tool.cfg">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.72289157">
           <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
           <folding />
         </state>
@@ -757,16 +640,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SpatialDecision/spatial_decision_dockwidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SpatialDecision/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10460251">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.4819278">
+          <caret line="661" column="32" selection-start-line="661" selection-start-column="32" selection-end-line="661" selection-end-column="32" />
           <folding />
         </state>
       </provider>
