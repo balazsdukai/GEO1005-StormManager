@@ -105,15 +105,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # visualisation
 
-        # reporting
-        # self.featureCounterUpdateButton.hide()
-        # self.saveMapButton.hide()
-        # self.saveMapPathButton.hide()
-        # self.featureCounterUpdateButton.clicked.connect(self.updateNumberFeatures)
-        # self.saveMapButton.clicked.connect(self.saveMap)
-        # self.saveMapPathButton.clicked.connect(self.selectFile)
-        # self.updateAttribute.connect(self.extractAttributeSummary)
-
         # set current UI restrictions
         # initialisation
         self.eventlayer = uf.getLegendLayerByName(self.iface, 'Reports')
@@ -678,63 +669,3 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
         date = starttime[0].strftime('%Y-%m-%d')
         return date
-
-    #######
-    #    Reporting functions
-    #######
-    # update a text edit field
-    def updateNumberFeatures(self):
-        layer = self.getSelectedLayer()
-        if layer:
-            count = layer.featureCount()
-            self.featureCounterEdit.setText(str(count))
-
-    # selecting a file for saving
-    def selectFile(self):
-        last_dir = uf.getLastDir("SDSS")
-        path = QtGui.QFileDialog.getSaveFileName(self, "Save map file", last_dir, "PNG (*.png)")
-        if path.strip() != "":
-            path = unicode(path)
-            uf.setLastDir(path, "SDSS")
-            self.saveMapPathEdit.setText(path)
-
-    # saving the current screen
-    def saveMap(self):
-        filename = self.saveMapPathEdit.text()
-        if filename != '':
-            self.canvas.saveAsImage(filename, None, "PNG")
-
-    def extractAttributeSummary(self, attribute):
-        # get summary of the attribute
-        summary = []
-        layer = self.getSelectedLayer()
-
-        # send this to the table
-        self.clearTable()
-        self.updateTable(summary)
-
-        # # report window functions
-        # def updateReport(self, report):
-        #     self.reportList.clear()
-        #     self.reportList.addItems(report)
-        #
-        # def insertReport(self, item):
-        #     self.reportList.insertItem(0, item)
-        #
-        # def clearReport(self):
-        #     self.reportList.clear()
-
-        # # table window functions
-        # def updateTable(self, values):
-        #     # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
-        #     self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
-        #     self.statisticsTable.setRowCount(len(values))
-        #     for i, item in enumerate(values):
-        #         self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
-        #         self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
-        #     self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
-        #     self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
-        #     self.statisticsTable.resizeRowsToContents()
-        #
-        # def clearTable(self):
-        #     self.statisticsTable.clear()
