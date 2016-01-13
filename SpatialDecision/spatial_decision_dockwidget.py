@@ -28,12 +28,13 @@ from qgis.networkanalysis import *
 import resources
 import os
 import os.path
-import random
+#import random
 from . import utility_functions as uf
 
-# visualisation
+# example_chart
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+#from matplotlib import dates
 import datetime as dt
 import numpy as np
 from itertools import groupby
@@ -43,13 +44,14 @@ from itertools import groupby
 # try:
 #     import pandas as pd
 # except ImportError, e:
-#     cmd_subfolder =     os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile(inspect.currentframe()))[0],"external")))
+#     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile(inspect.currentframe()))[0],"external")))
 #     if cmd_subfolder not in sys.path:
 #         sys.path.insert(0, cmd_subfolder)
 #     import pandas as pd
 
 from matplotlib.ticker import FuncFormatter
 import math
+#from matplotlib import pyplot as plt
 from matplotlib import colors
 import matplotlib.cm as cm
 
@@ -104,6 +106,24 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         # visualisation
 
+        # reporting
+        # self.featureCounterUpdateButton.hide()
+        # self.saveMapButton.hide()
+        # self.saveMapPathButton.hide()
+        # self.featureCounterUpdateButton.clicked.connect(self.updateNumberFeatures)
+        # self.saveMapButton.clicked.connect(self.saveMap)
+        # self.saveMapPathButton.clicked.connect(self.selectFile)
+        # self.updateAttribute.connect(self.extractAttributeSummary)
+
+        # set current UI restrictions
+        # initialisation
+        self.eventlayer = uf.getLegendLayerByName(self.iface, 'Reports')
+        self.hospitalLayer = uf.getLegendLayerByName(self.iface, 'Hospital')
+        self.firestationLayer = uf.getLegendLayerByName(self.iface, 'Firestation')
+        self.hospital_name=''
+        self.firestation_name=''
+        self.event_source=self.eventlayer.selectedFeatures()
+
         # example_chart
         # add matplotlib Figure to chartFrame
         self.chart_figure = Figure()
@@ -115,46 +135,39 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.chart_canvas = FigureCanvas(self.chart_figure)
         self.chartLayout.addWidget(self.chart_canvas)
 
-        # initialisation
-        self.eventlayer = uf.getLegendLayerByName(self.iface, 'reports')
-        self.hospitalLayer = uf.getLegendLayerByName(self.iface, 'hospital')
-        self.firestationLayer = uf.getLegendLayerByName(self.iface, 'firestation')
-        self.hospital_name=''
-        self.firestation_name=''
-        self.event_source=self.eventlayer.selectedFeatures()
         self.updateLayers()
 
         # run simple tests
 
-    # def closeEvent(self, event):
-    #     # disconnect interface signals
-    #     self.iface.projectRead.disconnect(self.updateLayers)
-    #     self.iface.newProjectCreated.disconnect(self.updateLayers)
-    #
-    #     self.closingPlugin.emit()
-    #     event.accept()
+    def closeEvent(self, event):
+        # disconnect interface signals
+        self.iface.projectRead.disconnect(self.updateLayers)
+        self.iface.newProjectCreated.disconnect(self.updateLayers)
+
+        self.closingPlugin.emit()
+        event.accept()
 
     #######
     #   Data functions
     #######
-    # def openScenario(self, filename=""):
-    #     scenario_open = False
-    #     scenario_file = os.path.join('/Users/jorge/github/GEO1005', 'sample_data', 'time_test.qgs')
-    #     # check if file exists
-    #     if os.path.isfile(scenario_file):
-    #         self.iface.addProject(scenario_file)
-    #         scenario_open = True
-    #     else:
-    #         last_dir = uf.getLastDir("SDSS")
-    #         new_file = QtGui.QFileDialog.getOpenFileName(self, "", last_dir, "(*.qgs)")
-    #         if new_file:
-    #             self.iface.addProject(new_file)
-    #             scenario_open = True
-    #     if scenario_open:
-    #         self.updateLayers()
+    def openScenario(self, filename=""):
+        scenario_open = False
+        scenario_file = os.path.join('/Users/jorge/github/GEO1005', 'sample_data', 'time_test.qgs')
+        # check if file exists
+        if os.path.isfile(scenario_file):
+            self.iface.addProject(scenario_file)
+            scenario_open = True
+        else:
+            last_dir = uf.getLastDir("SDSS")
+            new_file = QtGui.QFileDialog.getOpenFileName(self, "", last_dir, "(*.qgs)")
+            if new_file:
+                self.iface.addProject(new_file)
+                scenario_open = True
+        if scenario_open:
+            self.updateLayers()
 
-    # def saveScenario(self):
-    #     self.iface.actionSaveProject()
+    def saveScenario(self):
+        self.iface.actionSaveProject()
 
     def updateLayers(self):
         layers = uf.getLegendLayers(self.iface, 'all', 'all')
@@ -164,9 +177,8 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             self.selectLayerCombo.addItems(layer_names)
             self.setSelectedLayer()
             self.plotChart()
-            print 'I would plot the chart now'
-        else:
-            print 'no layers to update'
+        #else:
+        #    self.clearChart()  # example_chart
 
     def setSelectedLayer(self):
         layer_name = self.selectLayerCombo.currentText()
@@ -182,11 +194,11 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.selectAttributeCombo.clear()
         if layer:
             fields = uf.getFieldNames(layer)
-            #self.clearChart()
+            # self.clearChart()
             self.selectAttributeCombo.addItems(fields)
             # send list to the report list window
             # self.clearReport()
-            self.updateReport(fields)
+            # self.updateReport(fields)
 
     def setSelectedAttribute(self):
         field_name = self.selectAttributeCombo.currentText()
@@ -405,12 +417,12 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             civilDmg = event[0].attribute('civilDmg')
             if civilDmg ==0 :
                 # origin and destination must be in the set of tied_points
-                self.buildNetwork(event,'firestation')
+                self.buildNetwork(event,'Firestation')
                 self.firestation_name=self.shortestRoute(self.tied_points)
             else:
-                self.buildNetwork(event,'firestation')
+                self.buildNetwork(event,'Firestation')
                 self.firestation_name=self.shortestRoute(self.tied_points)
-                self.buildNetwork(event,'hospital')
+                self.buildNetwork(event,'Hospital')
                 self.hospital_name=self.shortestRoute(self.tied_points)
             routes_layer = uf.getLegendLayerByName(self.iface, "Routes")
             self.refreshCanvas(routes_layer)
@@ -501,24 +513,24 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         else:
             self.canvas.refresh()
 
-    # # feature selection
-    # def selectFeaturesBuffer(self):
-    #     layer = self.getSelectedLayer()
-    #     buffer_layer = uf.getLegendLayerByName(self.iface, "Buffers")
-    #     if buffer_layer and layer:
-    #         uf.selectFeaturesByIntersection(layer, buffer_layer, True)
-    #
-    # def selectFeaturesRange(self):
-    #     layer = self.getSelectedLayer()
-    #     # for the range takes values from the service area (max) and buffer (min) text edits
-    #     max = self.getServiceAreaCutoff()
-    #     min = self.getBufferCutoff()
-    #     if layer and max and min:
-    #         # gets list of numeric fields in layer
-    #         fields = uf.getNumericFields(layer)
-    #         if fields:
-    #             # selects features with values in the range
-    #             uf.selectFeaturesByRangeValues(layer, fields[0].name(), min, max)
+    # feature selection
+    def selectFeaturesBuffer(self):
+        layer = self.getSelectedLayer()
+        buffer_layer = uf.getLegendLayerByName(self.iface, "Buffers")
+        if buffer_layer and layer:
+            uf.selectFeaturesByIntersection(layer, buffer_layer, True)
+
+    def selectFeaturesRange(self):
+        layer = self.getSelectedLayer()
+        # for the range takes values from the service area (max) and buffer (min) text edits
+        max = self.getServiceAreaCutoff()
+        min = self.getBufferCutoff()
+        if layer and max and min:
+            # gets list of numeric fields in layer
+            fields = uf.getNumericFields(layer)
+            if fields:
+                # selects features with values in the range
+                uf.selectFeaturesByRangeValues(layer, fields[0].name(), min, max)
 
     #######
     #    Visualisation functions
@@ -535,7 +547,122 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         #     attribute = 'NULL'
         self.valueWidget.addItems(attribute)
 
-    # example_chart
+
+    # def plotChart(self):
+    #     """
+    #     Adapted from Jorge Gil.
+    #     Returns
+    #     -------
+    #     Draws the maplotlib figures. The wind rose plot and the wind speed bar plot.
+    #     """
+    #     plot_layer = uf.getLegendLayerByName(self.iface, 'Wind')  # in my case it is fixed to the wind layer
+    #     if plot_layer:
+    #         starttime = uf.getAllFeatureValues(plot_layer, 'starttime')
+    #         starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
+    #         direction = uf.getAllFeatureValues(plot_layer, 'direction')
+    #         speed = uf.getAllFeatureValues(plot_layer, 'speed')
+    #
+    #         # ======================
+    #         # From: https://github.com/phobson/python-metar/blob/master/metar/graphics.py
+    #         # prepare and create the wind direction plot
+    #         #     '''
+    #         #     Plots a Wind Rose. Feed it a dataframe with 'speed'(kmh) and
+    #         #     'direction' degrees clockwise from north (columns)
+    #         #     '''
+    #         self.chart_subplot_radar.cla()
+    #
+    #         d = {'starttime': starttime, 'direction': uf.getAllFeatureValues(plot_layer, 'direction'),
+    #              'speed': uf.getAllFeatureValues(plot_layer, 'speed')
+    #              }
+    #         dataframe = pd.DataFrame(d)
+    #         speedcol='speed'
+    #         dircol='direction'
+    #
+    #         def _get_wind_counts(dataframe, maxSpeed, speedcol, dircol, factor=1):
+    #             group = dataframe[dataframe[speedcol]*factor < maxSpeed].groupby(by=dircol)
+    #             counts = group.size()
+    #             return counts[counts.index != 0]
+    #
+    #         def _convert_dir_to_left_radian(directions):
+    #             N = directions.shape[0]
+    #             barDir = directions * np.pi/180. - np.pi/N
+    #             barWidth = [2 * np.pi / N]*N
+    #             return barDir, barWidth
+    #
+    #         def _pct_fmt(x, pos=0):
+    #             return '%0.1f%%' % (100*x)
+    #
+    #         # set up the axis
+    #         self.chart_subplot_radar.xaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
+    #         self.chart_subplot_radar.yaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
+    #         self.chart_subplot_radar.set_theta_zero_location("N")
+    #         self.chart_subplot_radar.set_theta_direction('clockwise')
+    #
+    #         # speed bins and colors
+    #         def _roundup(x):
+    #             return int(math.ceil(x / 10.0)) * 10
+    #
+    #         speedBins = list(sorted(set([_roundup(n) for n in speed])).__reversed__())
+    #         norm = colors.Normalize(vmin=min(speedBins), vmax=max(speedBins)) # normalize the colors to the range of windspeed
+    #
+    #         # number of total and zero-wind observations
+    #         total = np.float(dataframe.shape[0])
+    #         factor = 1
+    #         units = 'kmh'
+    #         # calm = np.float(dataframe[dataframe[speedcol] == 0].shape[0])/total * 100
+    #
+    #         # loop through the speed bins
+    #         for spd in speedBins:
+    #             barLen = _get_wind_counts(dataframe, spd, speedcol, dircol, factor=factor)
+    #             barLen = barLen/total
+    #             barDir, barWidth = _convert_dir_to_left_radian(np.array(barLen.index))
+    #             self.chart_subplot_radar.bar(barDir, barLen, width=barWidth, linewidth=0.50,
+    #                     edgecolor=(0.25, 0.25, 0.25), color=cm.jet(norm(spd)), alpha=0.8,
+    #                     label=r"<%d %s" % (spd, units))
+    #
+    #         # format the plot's axes
+    #         self.chart_subplot_radar.legend(loc='lower right', bbox_to_anchor=(1.25, -0.13), fontsize=8)
+    #         self.chart_subplot_radar.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
+    #         self.chart_subplot_radar.xaxis.grid(True, which='major', color='k', alpha=0.5)
+    #         self.chart_subplot_radar.yaxis.grid(True, which='major', color='k', alpha=0.5)
+    #         self.chart_subplot_radar.yaxis.set_major_formatter(FuncFormatter(_pct_fmt))
+    #         # self.chart_subplot_radar.text(0.05, 0.95, 'Calm Winds: %0.1f%%' % calm)
+    #         # if calm >= 0.1:
+    #         #   self.chart_subplot_radar.set_ylim(ymin=np.floor(calm*10)/10.)
+    #
+    #         # ======================
+    #         # draw windspeed bar plot
+    #         # x = time, y = wind speed
+    #         self.chart_subplot_bar.cla()
+    #         # loop through the speed bins
+    #         norm = colors.Normalize(min(speed), max(speed))
+    #         for spd, time in zip(speed, starttime):
+    #             self.chart_subplot_bar.bar(time, spd, width=0.03, align = 'center',
+    #                     edgecolor=(0.25, 0.25, 0.25), color=cm.jet(norm(spd)), alpha=0.8)
+    #         self.chart_subplot_bar.set_ylim(bottom=0, top=150)
+    #
+    #         # dangerous windspeed
+    #         self.chart_subplot_bar.hlines(120, xmin=min(starttime), xmax=max(starttime), colors='r')
+    #         self.chart_subplot_bar.annotate('safety hazard', xy=(.85, .82), xycoords='axes fraction',
+    #                         horizontalalignment='center', verticalalignment='center', color = 'r')
+    #         self.chart_subplot_bar.annotate('[kmh]', xy=(-0, 1), xycoords='axes fraction',
+    #                         horizontalalignment='right', verticalalignment='bottom')
+    #
+    #         # set x-axis labels
+    #         labels = [time.strftime('%H:%M') for time in starttime]
+    #         self.chart_subplot_bar.set_xticks(starttime)
+    #         self.chart_subplot_bar.set_xticklabels(labels, rotation = 'vertical')
+    #
+    #         # # Mark the current time with a vertical line — not implemented due to differring time between
+    #         # # datetime.datetime.now().time() and the date range used in the simulation data. It would work with
+    #         # # real-time dataset.
+    #         # current_time = dt.datetime.now().time()
+    #         # self.chart_subplot_bar.vlines(current_time, ymin=0, ymax=140, linestyles = 'dotted')
+    #
+    #     # draw all the plots
+    #     self.chart_canvas.draw()
+
+
     def plotChart(self):
         """
         Adapted from Jorge Gil.
@@ -543,7 +670,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         -------
         Draws the maplotlib figures. The wind rose plot and the wind speed bar plot.
         """
-        plot_layer = uf.getLegendLayerByName(self.iface, 'wind')  # in my case it is fixed to the wind layer
+        plot_layer = uf.getLegendLayerByName(self.iface, 'Wind')  # in my case it is fixed to the wind layer
         if plot_layer:
             starttime = uf.getAllFeatureValues(plot_layer, 'starttime')
             starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
@@ -687,8 +814,68 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         -------
         String. The date part of the first timestamp in the wind data.
         """
-        layer = uf.getLegendLayerByName(self.iface, 'wind')
+        layer = uf.getLegendLayerByName(self.iface, 'Wind')
         starttime = uf.getAllFeatureValues(layer, 'starttime')
         starttime = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S") for date in starttime]
         date = starttime[0].strftime('%Y-%m-%d')
         return date
+
+    #######
+    #    Reporting functions
+    #######
+    # update a text edit field
+    def updateNumberFeatures(self):
+        layer = self.getSelectedLayer()
+        if layer:
+            count = layer.featureCount()
+            self.featureCounterEdit.setText(str(count))
+
+    # selecting a file for saving
+    def selectFile(self):
+        last_dir = uf.getLastDir("SDSS")
+        path = QtGui.QFileDialog.getSaveFileName(self, "Save map file", last_dir, "PNG (*.png)")
+        if path.strip() != "":
+            path = unicode(path)
+            uf.setLastDir(path, "SDSS")
+            self.saveMapPathEdit.setText(path)
+
+    # saving the current screen
+    def saveMap(self):
+        filename = self.saveMapPathEdit.text()
+        if filename != '':
+            self.canvas.saveAsImage(filename, None, "PNG")
+
+    def extractAttributeSummary(self, attribute):
+        # get summary of the attribute
+        summary = []
+        layer = self.getSelectedLayer()
+
+        # send this to the table
+        self.clearTable()
+        self.updateTable(summary)
+
+        # # report window functions
+        # def updateReport(self, report):
+        #     self.reportList.clear()
+        #     self.reportList.addItems(report)
+        #
+        # def insertReport(self, item):
+        #     self.reportList.insertItem(0, item)
+        #
+        # def clearReport(self):
+        #     self.reportList.clear()
+
+        # # table window functions
+        # def updateTable(self, values):
+        #     # takes a list of label / value pairs, can be tuples or lists. not dictionaries to control order
+        #     self.statisticsTable.setHorizontalHeaderLabels(["Item", "Value"])
+        #     self.statisticsTable.setRowCount(len(values))
+        #     for i, item in enumerate(values):
+        #         self.statisticsTable.setItem(i, 0, QtGui.QTableWidgetItem(str(item[0])))
+        #         self.statisticsTable.setItem(i, 1, QtGui.QTableWidgetItem(str(item[1])))
+        #     self.statisticsTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+        #     self.statisticsTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Stretch)
+        #     self.statisticsTable.resizeRowsToContents()
+        #
+        # def clearTable(self):
+        #     self.statisticsTable.clear()
