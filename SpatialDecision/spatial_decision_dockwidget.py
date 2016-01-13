@@ -82,10 +82,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # data
         self.iface.projectRead.connect(self.updateLayers)
         self.iface.newProjectCreated.connect(self.updateLayers)
-        self.openScenarioButton.hide()
-        self.saveScenarioButton.hide()
-        # self.openScenarioButton.clicked.connect(self.openScenario)
-        # self.saveScenarioButton.clicked.connect(self.saveScenario)
         self.selectLayerCombo.activated.connect(self.setSelectedLayer)
         self.selectAttributeCombo.activated.connect(self.setSelectedAttribute)
         self.showButton.clicked.connect(self.updateValueWidget)
@@ -140,24 +136,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     #######
     #   Data functions
     #######
-    def openScenario(self, filename=""):
-        scenario_open = False
-        scenario_file = os.path.join('/Users/jorge/github/GEO1005', 'sample_data', 'time_test.qgs')
-        # check if file exists
-        if os.path.isfile(scenario_file):
-            self.iface.addProject(scenario_file)
-            scenario_open = True
-        else:
-            last_dir = uf.getLastDir("SDSS")
-            new_file = QtGui.QFileDialog.getOpenFileName(self, "", last_dir, "(*.qgs)")
-            if new_file:
-                self.iface.addProject(new_file)
-                scenario_open = True
-        if scenario_open:
-            self.updateLayers()
-
-    def saveScenario(self):
-        self.iface.actionSaveProject()
 
     def updateLayers(self):
         layers = uf.getLegendLayers(self.iface, 'all', 'all')
