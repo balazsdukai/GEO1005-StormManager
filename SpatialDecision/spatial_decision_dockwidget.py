@@ -34,23 +34,11 @@ from . import utility_functions as uf
 # example_chart
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from matplotlib import dates
 import datetime as dt
 import numpy as np
-
-import sys
-import inspect
-try:
-    import pandas as pd
-except ImportError, e:
-    cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile(inspect.currentframe()))[0],"external")))
-    if cmd_subfolder not in sys.path:
-        sys.path.insert(0, cmd_subfolder)
-    import pandas as pd
-
+from itertools import groupby
 from matplotlib.ticker import FuncFormatter
 import math
-from matplotlib import pyplot as plt
 from matplotlib import colors
 import matplotlib.cm as cm
 
@@ -515,7 +503,6 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         #     attribute = 'NULL'
         self.valueWidget.addItems(attribute)
 
-    # example_chart
     def plotChart(self):
         """
         Adapted from Jorge Gil.
@@ -538,27 +525,28 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             #     'direction' degrees clockwise from north (columns)
             #     '''
             self.chart_subplot_radar.cla()
+            total = np.float(len(direction))
+            units = 'kmh'
 
-            d = {'starttime': starttime, 'direction': uf.getAllFeatureValues(plot_layer, 'direction'),
-                 'speed': uf.getAllFeatureValues(plot_layer, 'speed')
-                 }
-            dataframe = pd.DataFrame(d)
-            speedcol='speed'
-            dircol='direction'
+            def _get_wind_counts(direction, speed, maxSpeed):
+                speed_a = np.array(speed)
+                dir_a = np.array(direction)
+                group = dir_a[speed_a < maxSpeed]
+                counts = dict((key, len(list(group))) for key, group in groupby(sorted(group)))
+                return counts
 
-            def _get_wind_counts(dataframe, maxSpeed, speedcol, dircol, factor=1):
-                group = dataframe[dataframe[speedcol]*factor < maxSpeed].groupby(by=dircol)
-                counts = group.size()
-                return counts[counts.index != 0]
-
-            def _convert_dir_to_left_radian(directions):
-                N = directions.shape[0]
-                barDir = directions * np.pi/180. - np.pi/N
+            def _convert_dir_to_left_radian(direction):
+                dir_a = np.array(direction)
+                N = len(dir_a)
+                barDir = dir_a * np.pi/180. - np.pi/N
                 barWidth = [2 * np.pi / N]*N
                 return barDir, barWidth
 
             def _pct_fmt(x, pos=0):
                 return '%0.1f%%' % (100*x)
+
+            def _roundup(x):
+                return int(math.ceil(x / 10.0)) * 10
 
             # set up the axis
             self.chart_subplot_radar.xaxis.grid(True, which='major', linestyle='-', alpha='0.125', zorder=0)
@@ -567,24 +555,15 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             self.chart_subplot_radar.set_theta_direction('clockwise')
 
             # speed bins and colors
-            def _roundup(x):
-                return int(math.ceil(x / 10.0)) * 10
-
             speedBins = list(sorted(set([_roundup(n) for n in speed])).__reversed__())
             norm = colors.Normalize(vmin=min(speedBins), vmax=max(speedBins)) # normalize the colors to the range of windspeed
 
-            # number of total and zero-wind observations
-            total = np.float(dataframe.shape[0])
-            factor = 1
-            units = 'kmh'
-            # calm = np.float(dataframe[dataframe[speedcol] == 0].shape[0])/total * 100
-
-            # loop through the speed bins
             for spd in speedBins:
-                barLen = _get_wind_counts(dataframe, spd, speedcol, dircol, factor=factor)
-                barLen = barLen/total
-                barDir, barWidth = _convert_dir_to_left_radian(np.array(barLen.index))
-                self.chart_subplot_radar.bar(barDir, barLen, width=barWidth, linewidth=0.50,
+                degree_counts = _get_wind_counts(direction, speed, spd)
+                counts = np.array(degree_counts.values())/total
+                degrees = np.array(degree_counts.keys())
+                barDir, barWidth = _convert_dir_to_left_radian(degrees)
+                self.chart_subplot_radar.bar(barDir, counts, width=barWidth, linewidth=0.50,
                         edgecolor=(0.25, 0.25, 0.25), color=cm.jet(norm(spd)), alpha=0.8,
                         label=r"<%d %s" % (spd, units))
 
@@ -630,7 +609,7 @@ class SpatialDecisionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # draw all the plots
         self.chart_canvas.draw()
 
-    # example_chart
+
     def clearChart(self):
         self.chart_subplot_radar.cla()
         self.chart_subplot_bar.cla()
